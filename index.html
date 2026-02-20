@@ -90,7 +90,7 @@
             <i data-lucide="alert-triangle" class="w-5 h-5 mt-0.5 flex-shrink-0"></i>
             <div>
                 <h3 class="font-bold">Failed to load data</h3>
-                <p class="text-sm mt-1">Please check your Google Apps Script URL and ensure the sheet is deployed correctly.</p>
+                <p id="errorText" class="text-sm mt-1">Please check your Google Apps Script URL and ensure the sheet is deployed correctly.</p>
             </div>
         </div>
 
@@ -127,6 +127,7 @@
         async function fetchData() {
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
+            const errorText = document.getElementById('errorText');
             const grid = document.getElementById('appGrid');
             
             // UI Reset
@@ -136,14 +137,28 @@
             grid.innerHTML = '';
 
             try {
-                if(GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycby-aCqolBYp4-dsRshFmIJ2KIQgaotBgeXI2FBUmmRYDdcTCRnioxc5PdNY-K3Zcobu/exec") {
-                    throw new Error("URL not set");
+                if(GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycby-aCqolBYp4-dsRshFmIJ2KIQgaotBgeXI2FBUmmRYDdcTCRnioxc5PdNY-K3Zcobu/exec" || GOOGLE_SCRIPT_URL.trim() === "") {
+                    throw new Error("You haven't pasted your Web App URL into the code yet.");
                 }
 
-                const response = await fetch(GOOGLE_SCRIPT_URL);
-                const data = await response.json();
+                // Fetching with redirect follow for Google Apps Script
+                const response = await fetch(GOOGLE_SCRIPT_URL, { redirect: 'follow' });
                 
-                if(data.error) throw new Error(data.error);
+                // Read as raw text first to catch hidden HTML/Login pages
+                const rawText = await response.text();
+                
+                let data;
+                try {
+                    data = JSON.parse(rawText);
+                } catch (parseError) {
+                    console.error("Raw response from Google:", rawText);
+                    if (rawText.includes("<html")) {
+                        throw new Error("Google returned a webpage instead of data. Fix: Change deployment access from 'Anyone with a Google Account' to 'Anyone'.");
+                    }
+                    throw new Error("Invalid data format received. Check console for details.");
+                }
+                
+                if(data.error) throw new Error("Spreadsheet Error: " + data.error);
 
                 globalData = data;
                 renderItems('All');
@@ -152,7 +167,8 @@
                 grid.classList.remove('hidden');
 
             } catch (err) {
-                console.error(err);
+                console.error("Fetch Error:", err);
+                errorText.innerText = err.message || "Please check your Google Apps Script URL and ensure the sheet is deployed correctly.";
                 loading.classList.add('hidden');
                 error.classList.remove('hidden');
             }
