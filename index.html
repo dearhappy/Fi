@@ -3,138 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Field Incharge | Mission Control</title>
-    <!-- Tailwind CSS for rapid, professional styling -->
+    <title>Field Incharge | Premium Learning & Tools</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            background-color: #f8fafc;
+            scroll-behavior: smooth;
         }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        .hide-scroll::-webkit-scrollbar { display: none; }
+
+        /* Ticker Animation */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
+            white-space: nowrap;
         }
-        
-        .modal-enter { animation: modalFadeIn 0.3s ease-out forwards; }
+        .ticker {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 25s linear infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* Carousel Animation */
+        .carousel-container {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .carousel-item {
+            scroll-snap-align: center;
+        }
+
+        /* Premium Card Hover Effects */
+        .premium-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #fb923c;
+        }
+
+        /* Modal Animation */
+        .modal-enter { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Header Section -->
-    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+    <!-- TOP TICKER -->
+    <div class="bg-orange-600 text-white text-xs font-bold py-2 ticker-wrap border-b border-orange-700">
+        <div class="ticker flex items-center gap-8">
+            <span>🔥 FLASH SALE: 20% OFF ON ALL HSE COURSES!</span>
+            <span>⭐ NEW: Scaffolding Inspector Certification Module Added</span>
+            <span>🚀 Upgrade your skills with our Premium App Suite</span>
+            <span>🏆 Download your Official ID Card after exam completion</span>
+            <span>🔥 FLASH SALE: 20% OFF ON ALL HSE COURSES!</span>
+        </div>
+    </div>
+
+    <!-- HEADER & SEARCH -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-3">
-                    <div class="bg-orange-500 p-2 rounded-lg">
-                        <i data-lucide="hard-hat" class="w-6 h-6 text-white"></i>
+            <div class="flex flex-col md:flex-row justify-between items-center py-4 gap-4">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-slate-900 p-2.5 rounded-xl shadow-md">
+                            <i data-lucide="hard-hat" class="w-6 h-6 text-orange-500"></i>
+                        </div>
+                        <div>
+                            <h1 class="font-black text-xl tracking-tight text-slate-900 leading-none">FIELD INCHARGE</h1>
+                            <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-1">Global Training Portal</p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 class="font-bold text-xl tracking-tight">FIELD INCHARGE</h1>
-                        <p class="text-xs text-slate-400 font-medium">Operations Dashboard</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4">
-                    <button onclick="fetchData()" class="p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-full transition" title="Refresh Data">
+                    <!-- Mobile Sync Button -->
+                    <button onclick="fetchData()" class="md:hidden p-2 text-slate-400 hover:text-orange-500 bg-slate-50 rounded-lg border border-slate-200">
                         <i data-lucide="refresh-cw" class="w-5 h-5"></i>
                     </button>
-                    <div class="w-8 h-8 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center">
-                        <i data-lucide="user" class="w-4 h-4 text-slate-300"></i>
-                    </div>
                 </div>
+
+                <!-- Search Bar -->
+                <div class="w-full md:w-[400px] relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="w-5 h-5 text-slate-400 group-focus-within:text-orange-500 transition"></i>
+                    </div>
+                    <input type="text" id="searchInput" onkeyup="handleSearch()" class="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl leading-5 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all sm:text-sm shadow-inner" placeholder="Search courses, apps, or designations...">
+                </div>
+
+                <!-- Desktop Sync -->
+                <button onclick="fetchData()" class="hidden md:flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl transition shadow-sm">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Data
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- MAIN CONTENT -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         
-        <!-- Welcome Banner -->
-        <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl shadow-xl p-8 mb-8 flex flex-col md:flex-row justify-between items-center gap-6 relative overflow-hidden">
-            <div class="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-orange-500 opacity-20 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-blue-500 opacity-20 rounded-full blur-3xl"></div>
-            
-            <div class="relative z-10 text-white text-center md:text-left">
-                <div class="flex items-center justify-center md:justify-start gap-2 mb-3">
-                    <span class="bg-orange-500/20 text-orange-400 border border-orange-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5">
-                        <i data-lucide="sparkles" class="w-3 h-3"></i>
-                        Upgrade Your Skills
-                    </span>
+        <!-- OFFERS SLIDER (CAROUSEL) -->
+        <div class="mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="zap" class="w-5 h-5 text-orange-500"></i> Trending Offers
+                </h2>
+                <div class="flex gap-2">
+                    <button onclick="scrollCarousel(-1)" class="p-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-orange-50 shadow-sm"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                    <button onclick="scrollCarousel(1)" class="p-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-orange-50 shadow-sm"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                 </div>
-                <h2 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Level Up Your Expertise</h2>
-                <p class="text-slate-300 max-w-xl text-sm md:text-base leading-relaxed">
-                    Take professional courses, conquer industry exams, and instantly generate your <strong class="text-white font-semibold border-b border-orange-500">Official ID Card & Verified Certificates</strong>.
-                </p>
             </div>
-            
-            <div class="relative z-10 flex flex-col items-center md:items-end gap-3 w-full md:w-auto mt-4 md:mt-0">
-                <button onclick="document.getElementById('filters').scrollIntoView({behavior: 'smooth'})" class="w-full md:w-auto bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                    <i data-lucide="award" class="w-5 h-5"></i>
-                    Get Certified Now
-                </button>
-                <div class="flex items-center gap-2 text-xs text-slate-400 font-medium bg-slate-800/50 py-1.5 px-3 rounded-lg border border-slate-700/50">
-                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-                    Industry Recognized Standards
+
+            <div id="offersCarousel" class="carousel-container flex overflow-x-auto hide-scroll gap-4 pb-4">
+                <!-- Slide 1 -->
+                <div class="carousel-item flex-none w-[85%] md:w-[60%] lg:w-[45%]">
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-2xl shadow-lg relative overflow-hidden group h-full flex flex-col justify-between border border-slate-700">
+                        <div class="absolute right-0 top-0 w-32 h-32 bg-orange-500 opacity-20 rounded-full blur-2xl group-hover:bg-orange-400 transition duration-700"></div>
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-orange-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider mb-3">Save ₹500</span>
+                            <h3 class="text-2xl font-black text-white leading-tight mb-2">HSE Masterclass Bundle</h3>
+                            <p class="text-slate-400 text-sm w-4/5">Get certified in Work at Height, Confined Space, and LOTO in one package.</p>
+                        </div>
+                        <button onclick="document.getElementById('searchInput').value='HSE'; handleSearch();" class="mt-4 inline-flex items-center gap-2 text-orange-400 font-bold text-sm hover:text-orange-300 transition">
+                            Explore Bundle <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-item flex-none w-[85%] md:w-[60%] lg:w-[45%]">
+                    <div class="bg-gradient-to-br from-blue-900 to-blue-800 p-6 rounded-2xl shadow-lg relative overflow-hidden group h-full flex flex-col justify-between border border-blue-700">
+                        <div class="absolute right-0 top-0 w-32 h-32 bg-cyan-400 opacity-20 rounded-full blur-2xl group-hover:bg-cyan-300 transition duration-700"></div>
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-cyan-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider mb-3">Must Have App</span>
+                            <h3 class="text-2xl font-black text-white leading-tight mb-2">Salary & OT Calculator</h3>
+                            <p class="text-blue-200 text-sm w-4/5">Automate your site staff billing. Accurate, fast, and completely free to use.</p>
+                        </div>
+                        <button onclick="document.getElementById('searchInput').value='Salary'; handleSearch();" class="mt-4 inline-flex items-center gap-2 text-cyan-300 font-bold text-sm hover:text-cyan-200 transition">
+                            Open App <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-item flex-none w-[85%] md:w-[60%] lg:w-[45%]">
+                    <div class="bg-gradient-to-br from-emerald-900 to-emerald-800 p-6 rounded-2xl shadow-lg relative overflow-hidden group h-full flex flex-col justify-between border border-emerald-700">
+                        <div class="absolute right-0 top-0 w-32 h-32 bg-green-400 opacity-20 rounded-full blur-2xl group-hover:bg-green-300 transition duration-700"></div>
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider mb-3">Official ID Cards</span>
+                            <h3 class="text-2xl font-black text-white leading-tight mb-2">Scaffolding Certifications</h3>
+                            <p class="text-emerald-200 text-sm w-4/5">Pass the exam and generate your verifiable digital ID card instantly.</p>
+                        </div>
+                        <button onclick="document.getElementById('searchInput').value='Scaffolding'; handleSearch();" class="mt-4 inline-flex items-center gap-2 text-emerald-300 font-bold text-sm hover:text-emerald-200 transition">
+                            View Courses <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Filter/Tabs -->
-        <div class="flex overflow-x-auto pb-4 mb-6 gap-2 hide-scroll" id="filters">
-            <button onclick="filterItems('All')" class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold bg-slate-800 text-white whitespace-nowrap transition">All Tools</button>
-            <button onclick="filterItems('Web App')" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 whitespace-nowrap transition">Web Apps</button>
-            <button onclick="filterItems('Training')" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 whitespace-nowrap transition">Trainings</button>
-            <button onclick="filterItems('Course')" class="filter-btn px-4 py-2 rounded-full text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 whitespace-nowrap transition">Courses</button>
+        <!-- FILTERS -->
+        <div class="flex items-center justify-between mb-6 border-b border-slate-200 pb-2">
+            <h2 class="text-lg font-bold text-slate-800">Browse Catalog</h2>
+            <div class="flex overflow-x-auto gap-2 hide-scroll" id="filters">
+                <button onclick="setFilter('All')" class="filter-btn active px-4 py-1.5 rounded-lg text-sm font-bold bg-slate-900 text-white whitespace-nowrap transition shadow-sm">All</button>
+                <button onclick="setFilter('Web App')" class="filter-btn px-4 py-1.5 rounded-lg text-sm font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 whitespace-nowrap transition">Apps</button>
+                <button onclick="setFilter('Course')" class="filter-btn px-4 py-1.5 rounded-lg text-sm font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 whitespace-nowrap transition">Courses</button>
+                <button onclick="setFilter('Training')" class="filter-btn px-4 py-1.5 rounded-lg text-sm font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 whitespace-nowrap transition">Trainings</button>
+            </div>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="w-full">
+        <!-- LOADING STATE -->
+        <div id="loading" class="w-full py-10">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Skeletons -->
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm"><div class="h-40 w-full bg-slate-200 animate-pulse"></div><div class="p-5 flex flex-col flex-grow gap-3"><div class="h-6 bg-slate-200 rounded-md w-3/4 animate-pulse"></div><div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div><div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center"><div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div><div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div></div></div></div>
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden sm:flex"><div class="h-40 w-full bg-slate-200 animate-pulse"></div><div class="p-5 flex flex-col flex-grow gap-3"><div class="h-6 bg-slate-200 rounded-md w-2/3 animate-pulse"></div><div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div><div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center"><div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div><div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div></div></div></div>
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden lg:flex"><div class="h-40 w-full bg-slate-200 animate-pulse"></div><div class="p-5 flex flex-col flex-grow gap-3"><div class="h-6 bg-slate-200 rounded-md w-3/4 animate-pulse"></div><div class="h-4 bg-slate-200 rounded-md w-11/12 animate-pulse mt-2"></div><div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center"><div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div><div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div></div></div></div>
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden xl:flex"><div class="h-40 w-full bg-slate-200 animate-pulse"></div><div class="p-5 flex flex-col flex-grow gap-3"><div class="h-6 bg-slate-200 rounded-md w-1/2 animate-pulse"></div><div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div><div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center"><div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div><div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div></div></div></div>
+                <!-- 4 Skeleton Cards -->
+                <div class="bg-white rounded-2xl border border-slate-200 h-80 flex flex-col"><div class="h-40 bg-slate-200 animate-pulse rounded-t-2xl"></div><div class="p-5 flex flex-col gap-3"><div class="h-6 bg-slate-200 rounded animate-pulse w-3/4"></div><div class="h-4 bg-slate-200 rounded animate-pulse w-full"></div><div class="h-4 bg-slate-200 rounded animate-pulse w-1/2"></div></div></div>
+                <div class="bg-white rounded-2xl border border-slate-200 h-80 flex flex-col hidden sm:flex"><div class="h-40 bg-slate-200 animate-pulse rounded-t-2xl"></div><div class="p-5 flex flex-col gap-3"><div class="h-6 bg-slate-200 rounded animate-pulse w-3/4"></div><div class="h-4 bg-slate-200 rounded animate-pulse w-full"></div><div class="h-4 bg-slate-200 rounded animate-pulse w-1/2"></div></div></div>
+                <div class="bg-white rounded-2xl border border-slate-200 h-80 flex flex-col hidden lg:flex"><div class="h-40 bg-slate-200 animate-pulse rounded-t-2xl"></div><div class="p-5 flex flex-col gap-3"><div class="h-6 bg-slate-200 rounded animate-pulse w-3/4"></div><div class="h-4 bg-slate-200 rounded animate-pulse w-full"></div><div class="h-4 bg-slate-200 rounded animate-pulse w-1/2"></div></div></div>
+                <div class="bg-white rounded-2xl border border-slate-200 h-80 flex flex-col hidden xl:flex"><div class="h-40 bg-slate-200 animate-pulse rounded-t-2xl"></div><div class="p-5 flex flex-col gap-3"><div class="h-6 bg-slate-200 rounded animate-pulse w-3/4"></div><div class="h-4 bg-slate-200 rounded animate-pulse w-full"></div><div class="h-4 bg-slate-200 rounded animate-pulse w-1/2"></div></div></div>
             </div>
         </div>
 
-        <!-- Error State -->
+        <!-- ERROR STATE -->
         <div id="error" class="hidden bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 flex items-start gap-3">
-            <i data-lucide="alert-triangle" class="w-5 h-5 mt-0.5 flex-shrink-0"></i>
+            <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
             <div>
                 <h3 class="font-bold">Failed to load data</h3>
-                <p id="errorText" class="text-sm mt-1">Please check your Google Apps Script URL and ensure the sheet is deployed correctly.</p>
+                <p id="errorText" class="text-sm">Please check your Google Apps Script URL.</p>
             </div>
         </div>
 
-        <!-- Grid Container -->
+        <!-- GRID CONTAINER -->
         <div id="appGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 hidden">
             <!-- Dynamic Content goes here -->
         </div>
 
     </main>
 
-    <!-- Unified Access Modal (Payment & Passcode) -->
-    <div id="accessModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
+    <!-- BOTTOM TICKER -->
+    <div class="bg-slate-900 text-slate-400 text-xs py-2 ticker-wrap border-t border-slate-800 mt-auto">
+        <div class="ticker flex items-center gap-10">
+            <span>🛠️ Field Incharge - Empowering Construction Professionals Globally</span>
+            <span>📞 Support: info@fieldincharge.in</span>
+            <span>🔒 100% Secure Payments</span>
+            <span>📜 Verifiable Certifications</span>
+            <span>🛠️ Field Incharge - Empowering Construction Professionals Globally</span>
+        </div>
+    </div>
+
+    <!-- Payment & Passcode Modal (Keep Exact Logic) -->
+    <div id="accessModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md hidden z-[100] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden modal-enter">
             <!-- Modal Header -->
             <div class="bg-slate-900 px-6 py-4 flex justify-between items-center border-b border-slate-800">
                 <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                    <i data-lucide="shield" class="w-5 h-5 text-orange-500"></i>
-                    Course Access
+                    <i data-lucide="shield" class="w-5 h-5 text-orange-500"></i> Course Access
                 </h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white transition">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -151,149 +250,125 @@
                 <!-- Tabs -->
                 <div class="flex bg-slate-100 p-1 rounded-lg mb-6">
                     <button type="button" onclick="switchTab('pay')" id="tabPay" class="flex-1 py-2 text-sm font-bold bg-white text-slate-800 rounded-md shadow-sm transition">Buy Access</button>
-                    <button type="button" onclick="switchTab('code')" id="tabCode" class="flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 rounded-md transition">I have a Passcode</button>
+                    <button type="button" onclick="switchTab('code')" id="tabCode" class="flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 rounded-md transition">Enter Passcode</button>
                 </div>
 
                 <!-- TAB 1: Payment Form -->
                 <form id="paymentForm" onsubmit="submitPayment(event)">
-                    <div class="mb-4 inline-flex items-center justify-center gap-2 bg-orange-50 text-orange-600 font-bold px-4 py-2 rounded-lg border border-orange-100 w-full">
-                        Total Amount: <span id="modalCoursePrice" class="text-2xl">₹0</span>
+                    <div class="mb-4 inline-flex items-center justify-center gap-2 bg-orange-50 text-orange-600 font-bold px-4 py-2 rounded-lg border border-orange-100 w-full shadow-inner">
+                        Amount to Pay: <span id="modalCoursePrice" class="text-2xl">₹0</span>
                     </div>
                     
                     <div class="space-y-4">
-                        <div>
-                            <input type="text" id="payName" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="Your Full Name">
-                        </div>
-                        <div>
-                            <input type="email" id="payEmail" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="Your Email Address">
-                            <p class="text-[11px] text-slate-500 mt-1"><i data-lucide="info" class="w-3 h-3 inline"></i> Passcode will be manually sent to this email after verification.</p>
-                        </div>
+                        <input type="text" id="payName" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="Your Full Name">
+                        <input type="email" id="payEmail" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="Your Email Address">
                         
-                        <!-- Professional UPI Payment Section -->
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mt-4 shadow-inner">
-                            <label class="block text-sm font-bold text-slate-700 mb-3">Complete Payment via UPI</label>
-                            
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner">
+                            <label class="block text-sm font-bold text-slate-700 mb-3">Scan & Pay via UPI</label>
                             <div class="flex items-start gap-4 mb-4">
-                                <!-- Static QR Code Image Container -->
-                                <div class="block bg-white p-1.5 rounded-xl border-2 border-slate-200 shadow-sm flex-shrink-0">
-                                    <img id="upiQrCode" src="" alt="UPI QR Code" class="w-20 h-20 md:w-24 md:h-24 object-contain rounded-lg">
+                                <div class="bg-white p-1.5 rounded-xl border-2 border-slate-200 shadow-sm flex-shrink-0">
+                                    <img id="upiQrCode" src="" alt="UPI QR Code" class="w-20 h-20 object-contain rounded-lg">
                                 </div>
-                                
-                                <div class="flex-grow pt-1 overflow-hidden">
-                                    <div class="flex gap-1.5 mb-2">
-                                        <span class="text-[9px] font-bold bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded uppercase tracking-wider">GPay</span>
-                                        <span class="text-[9px] font-bold bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded uppercase tracking-wider">PhonePe</span>
-                                        <span class="text-[9px] font-bold bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded uppercase tracking-wider">Paytm</span>
-                                    </div>
-                                    <p class="text-xs text-slate-500 mb-1">Scan or pay to UPI ID:</p>
+                                <div class="flex-grow pt-1">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1">UPI ID:</p>
                                     <div class="flex items-center gap-2">
-                                        <code id="upiIdText" class="text-xs md:text-sm font-bold text-slate-800 bg-white px-2 py-1 rounded border border-slate-200 truncate select-all">YOUR_UPI_ID</code>
-                                        <button type="button" id="copyUpiBtn" onclick="copyUpiId()" class="p-1.5 flex-shrink-0 text-slate-400 hover:text-orange-600 bg-white border border-slate-200 rounded transition" title="Copy UPI ID">
-                                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                        <code id="upiIdText" class="text-sm font-bold text-slate-800 bg-white px-2 py-1 rounded border border-slate-200 truncate w-full select-all">UPI_ID</code>
+                                        <button type="button" id="copyUpiBtn" onclick="copyUpiId()" class="p-2 bg-slate-900 text-white hover:bg-orange-500 rounded transition" title="Copy">
+                                            <i data-lucide="copy" class="w-4 h-4"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-
-                            <label class="block text-xs font-semibold text-slate-700 mt-2 mb-1">Payment Sender Name</label>
-                            <input type="text" id="paySenderName" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none text-sm transition" placeholder="Name of the person who made the payment">
+                            <input type="text" id="paySenderName" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-orange-500 outline-none text-sm transition" placeholder="Name of Bank/UPI Account Holder">
                         </div>
                     </div>
 
-                    <div class="mt-6">
-                        <button type="submit" id="paySubmitBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex justify-center items-center gap-2">
-                            <span>Submit Payment Details</span>
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
+                    <button type="submit" id="paySubmitBtn" class="mt-6 w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg transition flex justify-center items-center gap-2">
+                        <span>Submit Payment Details</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
                 </form>
 
                 <!-- TAB 2: Passcode Entry Form -->
                 <form id="passcodeForm" class="hidden" onsubmit="verifyPasscode(event)">
-                    <div class="bg-blue-50 text-blue-800 p-4 rounded-xl border border-blue-100 mb-6 flex gap-3">
-                        <i data-lucide="mail" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
-                        <p class="text-sm">Please enter the 6-character entry passcode sent to your email after manual verification.</p>
+                    <div class="bg-blue-50 text-blue-800 p-4 rounded-xl border border-blue-100 mb-6 flex gap-3 text-sm font-medium">
+                        <i data-lucide="info" class="w-5 h-5 flex-shrink-0"></i>
+                        <p>Enter your 6-character access code once it has been activated by the admin.</p>
                     </div>
+                    <input type="text" id="entryPasscode" required class="w-full px-4 py-5 text-center tracking-[0.5em] font-mono text-2xl uppercase rounded-xl border-2 border-slate-300 focus:border-orange-500 outline-none transition shadow-inner" placeholder="XXXXXX" maxlength="6">
+                    <div id="passcodeError" class="hidden text-red-500 text-sm font-bold mt-3 text-center bg-red-50 p-2 rounded"></div>
                     
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Enter Passcode</label>
-                        <input type="text" id="entryPasscode" required class="w-full px-4 py-4 text-center tracking-[0.5em] font-mono text-xl uppercase rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="XXXXXX" maxlength="6">
-                    </div>
-                    
-                    <div id="passcodeError" class="hidden text-red-500 text-sm font-medium mt-3 text-center"></div>
-
-                    <div class="mt-6">
-                        <button type="submit" id="passcodeSubmitBtn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition flex justify-center items-center gap-2">
-                            <span>Unlock Course</span>
-                            <i data-lucide="unlock" class="w-4 h-4"></i>
-                        </button>
-                    </div>
+                    <button type="submit" id="passcodeSubmitBtn" class="mt-6 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 transition flex justify-center items-center gap-2">
+                        <span>Unlock Course</span> <i data-lucide="unlock" class="w-5 h-5"></i>
+                    </button>
                 </form>
 
-                <!-- Success State (Hidden by default) -->
-                <div id="paymentSuccess" class="hidden text-center py-6">
+                <!-- Success State -->
+                <div id="paymentSuccess" class="hidden text-center py-4">
                     <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-600"></i>
                     </div>
-                    <h4 class="text-xl font-bold text-slate-800 mb-2">Payment Submitted!</h4>
+                    <h4 class="text-xl font-bold text-slate-800 mb-3">Request Received!</h4>
                     
-                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
-                        <p class="text-xs text-orange-800 font-bold uppercase tracking-wider mb-1">Your Entry Passcode</p>
-                        <p id="generatedCodeDisplay" class="text-3xl font-mono font-black text-orange-600 tracking-widest">XXXXXX</p>
-                        <p class="text-xs text-orange-700 mt-2 font-medium">⚠️ Save this code now! It will not be shown again.</p>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-5 shadow-inner">
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Your Secret Passcode</p>
+                        <p id="generatedCodeDisplay" class="text-4xl font-mono font-black text-slate-800 tracking-widest bg-white py-3 border border-slate-200 rounded-lg select-all">XXXXXX</p>
+                        <p class="text-xs text-orange-600 mt-3 font-bold flex items-center justify-center gap-1">
+                            <i data-lucide="alert-circle" class="w-3 h-3"></i> Save this code! It will not be shown again.
+                        </p>
                     </div>
                     
-                    <p class="text-slate-600 text-sm mb-6">We will manually verify your payment. Your passcode will be activated in approximately 10 minutes. Once active, use the "I have a Passcode" tab to unlock the course.</p>
-                    <button type="button" onclick="closeModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 px-6 rounded-lg transition">Close</button>
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed bg-slate-100 p-3 rounded-lg">We will verify your payment manually. Your passcode will be activated shortly. Once active, use it in the "Enter Passcode" tab.</p>
+                    <button type="button" onclick="closeModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition">Got it, close window</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 py-6 text-center">
-            <p class="text-sm text-slate-500 font-medium">&copy; <span id="year"></span> Field Incharge. All rights reserved.</p>
-        </div>
-    </footer>
 
     <script>
         // ==========================================
         // ⚠️ CONFIGURATION VARIABLES
         // ==========================================
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-aCqolBYp4-dsRshFmIJ2KIQgaotBgeXI2FBUmmRYDdcTCRnioxc5PdNY-K3Zcobu/exec";
-        const UPI_ID = "fieldincharge@pingpay"; // <-- ⚠️ ENTER YOUR ACTUAL UPI ID HERE
+        const UPI_ID = "fieldincharge@pingpay"; 
 
         let globalData = [];
         let currentCheckoutCourse = "";
         let currentAppUrl = "";
+        let activeCategory = 'All';
 
         lucide.createIcons();
-        document.getElementById('year').innerText = new Date().getFullYear();
 
-        // Copy UPI Functionality
+        // Carousel Logic
+        function scrollCarousel(direction) {
+            const container = document.getElementById('offersCarousel');
+            const scrollAmount = container.clientWidth * 0.8;
+            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        // Copy UPI Logic
         function copyUpiId() {
-            const tempInput = document.createElement('input');
-            tempInput.value = UPI_ID;
-            document.body.appendChild(tempInput);
-            tempInput.select();
+            const temp = document.createElement('input');
+            temp.value = UPI_ID;
+            document.body.appendChild(temp);
+            temp.select();
             document.execCommand('copy');
-            document.body.removeChild(tempInput);
+            document.body.removeChild(temp);
             
-            const copyBtn = document.getElementById('copyUpiBtn');
-            copyBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i>`;
+            const btn = document.getElementById('copyUpiBtn');
+            btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i>`;
+            btn.classList.replace('bg-slate-900', 'bg-emerald-500');
             lucide.createIcons();
             setTimeout(() => {
-                copyBtn.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i>`;
+                btn.innerHTML = `<i data-lucide="copy" class="w-4 h-4"></i>`;
+                btn.classList.replace('bg-emerald-500', 'bg-slate-900');
                 lucide.createIcons();
             }, 2000);
         }
 
-        // Fetch Data from Google Sheets
+        // Fetch Data
         async function fetchData() {
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
-            const errorText = document.getElementById('errorText');
             const grid = document.getElementById('appGrid');
             
             loading.classList.remove('hidden');
@@ -302,85 +377,105 @@
             grid.innerHTML = '';
 
             try {
-                if(GOOGLE_SCRIPT_URL === "YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE" || GOOGLE_SCRIPT_URL.trim() === "") {
-                    throw new Error("You haven't pasted your Web App URL into the code yet.");
-                }
+                if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === "") throw new Error("URL missing.");
 
                 const response = await fetch(GOOGLE_SCRIPT_URL, { redirect: 'follow' });
                 const rawText = await response.text();
-                
-                let data;
-                try {
-                    data = JSON.parse(rawText);
-                } catch (parseError) {
-                    if (rawText.includes("<html")) {
-                        throw new Error("Google returned a webpage instead of data. Fix: Change deployment access to 'Anyone'.");
-                    }
-                    throw new Error("Invalid data format received.");
-                }
-                
-                if(data.error) throw new Error("Spreadsheet Error: " + data.error);
+                const data = JSON.parse(rawText);
+                if(data.error) throw new Error(data.error);
 
-                globalData = data;
-                renderItems('All');
+                globalData = data.reverse(); // Show newest first
+                applyCombinedFilters();
                 
                 loading.classList.add('hidden');
                 grid.classList.remove('hidden');
-
             } catch (err) {
-                errorText.innerText = err.message || "Please check your Google Apps Script URL.";
                 loading.classList.add('hidden');
                 error.classList.remove('hidden');
             }
         }
 
-        // Render Items to Grid
-        function renderItems(filterCategory) {
+        // Combined Filter & Search
+        function setFilter(category) {
+            activeCategory = category;
+            
+            // Update UI Buttons
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                if(btn.innerText.includes(category) || (category === 'All' && btn.innerText.includes('All'))) {
+                    btn.classList.replace('bg-white', 'bg-slate-900');
+                    btn.classList.replace('text-slate-600', 'text-white');
+                } else {
+                    btn.classList.replace('bg-slate-900', 'bg-white');
+                    btn.classList.replace('text-white', 'text-slate-600');
+                }
+            });
+            applyCombinedFilters();
+        }
+
+        function handleSearch() {
+            applyCombinedFilters();
+        }
+
+        function applyCombinedFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = globalData;
+
+            if (activeCategory !== 'All') {
+                filtered = filtered.filter(item => item.Category === activeCategory);
+            }
+
+            if (searchTerm !== '') {
+                filtered = filtered.filter(item => 
+                    item.Title.toLowerCase().includes(searchTerm) || 
+                    item.Description.toLowerCase().includes(searchTerm) ||
+                    item.Category.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderItems(filtered);
+        }
+
+        // Render UI
+        function renderItems(dataArray) {
             const grid = document.getElementById('appGrid');
             grid.innerHTML = ''; 
 
-            const filteredData = filterCategory === 'All' 
-                ? globalData 
-                : globalData.filter(item => item.Category === filterCategory);
-
-            if (filteredData.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-10 text-slate-500">No active items found for this category.</div>`;
+            if (dataArray.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-16 text-slate-400 font-medium">No results found matching your criteria.</div>`;
                 return;
             }
 
-            filteredData.forEach(item => {
+            dataArray.forEach(item => {
                 let iconName = 'layout-grid';
-                let badgeColor = 'bg-blue-100 text-blue-700';
+                let badgeClass = 'bg-slate-900 text-white';
                 
-                if(item.Category === 'Web App') { iconName = 'smartphone'; badgeColor = 'bg-indigo-100 text-indigo-700'; }
-                if(item.Category === 'Course') { iconName = 'graduation-cap'; badgeColor = 'bg-emerald-100 text-emerald-700'; }
-                if(item.Category === 'Training') { iconName = 'presentation'; badgeColor = 'bg-orange-100 text-orange-700'; }
+                if(item.Category === 'Web App') { iconName = 'smartphone'; badgeClass = 'bg-blue-600 text-white'; }
+                if(item.Category === 'Course') { iconName = 'graduation-cap'; badgeClass = 'bg-emerald-600 text-white'; }
+                if(item.Category === 'Training') { iconName = 'presentation'; badgeClass = 'bg-orange-600 text-white'; }
 
                 const isPaid = item.Price && item.Price.toString().toLowerCase() !== 'free' && item.Price !== '0' && item.Price !== '';
-                const actionText = isPaid ? `Enroll Now - ₹${item.Price}` : `Open Application`;
+                const actionText = isPaid ? `Enroll for ₹${item.Price}` : `Open Free`;
                 const actionIcon = isPaid ? 'lock' : 'arrow-right';
-                const actionClass = isPaid ? 'text-orange-600 font-bold' : 'text-slate-700 font-semibold';
+                const actionClass = isPaid ? 'bg-orange-50 text-orange-600 border border-orange-200 hover:bg-orange-500 hover:text-white' : 'bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-900 hover:text-white';
                 
-                const clickAction = isPaid 
-                    ? `event.preventDefault(); openAccessModal('${item.Title.replace(/'/g, "\\'")}', '${item.Price}', '${item.App_URL}');` 
-                    : ``;
+                const clickAction = isPaid ? `event.preventDefault(); openAccessModal('${item.Title.replace(/'/g, "\\'")}', '${item.Price}', '${item.App_URL}');` : ``;
 
                 const cardHTML = `
-                    <a href="${item.App_URL}" target="${isPaid ? '_self' : '_blank'}" onclick="${clickAction}" class="card-hover bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full group">
-                        <div class="h-40 w-full bg-slate-100 relative overflow-hidden">
-                            <img src="${item.Image_URL}" alt="${item.Title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=500&q=80'; this.onerror=null;">
-                            <div class="absolute top-3 left-3 ${badgeColor} text-xs font-bold px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1 backdrop-blur-md bg-opacity-90">
-                                <i data-lucide="${iconName}" class="w-3 h-3"></i>
-                                ${item.Category}
+                    <a href="${item.App_URL}" target="${isPaid ? '_self' : '_blank'}" onclick="${clickAction}" class="premium-card bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full group">
+                        <div class="h-44 w-full bg-slate-100 relative overflow-hidden">
+                            <img src="${item.Image_URL}" alt="${item.Title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-1 transition duration-700" onerror="this.src='https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=500&q=80';">
+                            <div class="absolute top-3 left-3 ${badgeClass} text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-md flex items-center gap-1.5 uppercase tracking-wider backdrop-blur-md">
+                                <i data-lucide="${iconName}" class="w-3.5 h-3.5"></i> ${item.Category}
                             </div>
-                            ${isPaid ? `<div class="absolute top-3 right-3 bg-slate-900 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">Paid</div>` : ''}
+                            ${isPaid ? `<div class="absolute top-3 right-3 bg-white/90 backdrop-blur text-slate-900 text-[10px] font-black px-2.5 py-1.5 rounded-lg shadow-md flex items-center gap-1"><i data-lucide="tag" class="w-3 h-3"></i> PAID</div>` : ''}
                         </div>
                         <div class="p-5 flex flex-col flex-grow">
-                            <h3 class="text-lg font-bold text-slate-800 mb-2 leading-tight group-hover:text-orange-600 transition">${item.Title}</h3>
-                            <p class="text-sm text-slate-500 flex-grow mb-4">${item.Description}</p>
-                            <div class="flex items-center justify-between text-sm ${actionClass} mt-auto pt-4 border-t border-slate-100">
+                            <h3 class="text-lg font-black text-slate-900 mb-2 leading-tight group-hover:text-orange-600 transition">${item.Title}</h3>
+                            <p class="text-sm text-slate-500 flex-grow mb-5 leading-relaxed">${item.Description}</p>
+                            <div class="mt-auto flex items-center justify-between px-4 py-3 rounded-xl transition font-bold text-sm ${actionClass}">
                                 <span>${actionText}</span>
-                                <i data-lucide="${actionIcon}" class="w-4 h-4 ${isPaid ? 'text-orange-600' : 'text-orange-500'} transform group-hover:translate-x-1 transition"></i>
+                                <i data-lucide="${actionIcon}" class="w-4 h-4"></i>
                             </div>
                         </div>
                     </a>
@@ -390,107 +485,70 @@
             lucide.createIcons();
         }
 
-        // Handle Filters
-        function filterItems(category) {
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => {
-                if(btn.innerText.includes(category) || (category === 'All' && btn.innerText.includes('All'))) {
-                    btn.classList.replace('bg-white', 'bg-slate-800');
-                    btn.classList.replace('text-slate-600', 'text-white');
-                    btn.classList.remove('border', 'border-slate-200', 'hover:bg-slate-50');
-                } else {
-                    btn.classList.replace('bg-slate-800', 'bg-white');
-                    btn.classList.replace('text-white', 'text-slate-600');
-                    btn.classList.add('border', 'border-slate-200', 'hover:bg-slate-50');
-                }
-            });
-            renderItems(category);
-        }
-
-        // Modal Functions
+        // Modal Logic
         function openAccessModal(title, price, url) {
             currentCheckoutCourse = title;
             currentAppUrl = url;
             document.getElementById('modalCourseTitle').innerText = title;
             document.getElementById('modalCoursePrice').innerText = `₹${price}`;
             
-            // Generate Dynamic UPI String & QR Code
             document.getElementById('upiIdText').innerText = UPI_ID;
-            const upiUri = `upi://pay?pa=${UPI_ID}&pn=Field%20Incharge&am=${price}&cu=INR&tn=${encodeURIComponent('Course Access: ' + title)}`;
-            // Using goqr.me API for reliable and clean QR generation
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiUri)}&color=0f172a&bgcolor=ffffff&margin=5`;
+            const upiUri = `upi://pay?pa=${UPI_ID}&pn=Field%20Incharge&am=${price}&cu=INR&tn=${encodeURIComponent('Access: ' + title)}`;
+            document.getElementById('upiQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiUri)}&color=0f172a&bgcolor=ffffff&margin=4`;
             
-            document.getElementById('upiQrCode').src = qrUrl;
-            
-            // Reset state
             switchTab('pay');
             document.getElementById('paymentForm').reset();
             document.getElementById('passcodeForm').reset();
             document.getElementById('paymentSuccess').classList.add('hidden');
-            document.getElementById('passcodeError').classList.add('hidden');
             
-            document.getElementById('paySubmitBtn').innerHTML = `<span>Submit Payment Details</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
-            document.getElementById('paySubmitBtn').disabled = false;
+            const btn = document.getElementById('paySubmitBtn');
+            btn.innerHTML = `<span>Submit Payment Details</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+            btn.disabled = false;
             
             document.getElementById('accessModal').classList.remove('hidden');
             lucide.createIcons();
         }
 
-        function closeModal() {
-            document.getElementById('accessModal').classList.add('hidden');
-        }
+        function closeModal() { document.getElementById('accessModal').classList.add('hidden'); }
 
         function switchTab(tab) {
             const tabPay = document.getElementById('tabPay');
             const tabCode = document.getElementById('tabCode');
-            const formPay = document.getElementById('paymentForm');
-            const formCode = document.getElementById('passcodeForm');
-            const successMsg = document.getElementById('paymentSuccess');
-
-            successMsg.classList.add('hidden');
+            document.getElementById('paymentSuccess').classList.add('hidden');
 
             if (tab === 'pay') {
                 tabPay.className = "flex-1 py-2 text-sm font-bold bg-white text-slate-800 rounded-md shadow-sm transition";
-                tabCode.className = "flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 rounded-md transition";
-                formPay.classList.remove('hidden');
-                formCode.classList.add('hidden');
+                tabCode.className = "flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-200 rounded-md transition";
+                document.getElementById('paymentForm').classList.remove('hidden');
+                document.getElementById('passcodeForm').classList.add('hidden');
             } else {
                 tabCode.className = "flex-1 py-2 text-sm font-bold bg-white text-slate-800 rounded-md shadow-sm transition";
-                tabPay.className = "flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 rounded-md transition";
-                formCode.classList.remove('hidden');
-                formPay.classList.add('hidden');
+                tabPay.className = "flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-200 rounded-md transition";
+                document.getElementById('passcodeForm').classList.remove('hidden');
+                document.getElementById('paymentForm').classList.add('hidden');
             }
         }
 
-        // Handle Payment Submission via Google Apps Script POST
         async function submitPayment(event) {
             event.preventDefault();
-            
             const btn = document.getElementById('paySubmitBtn');
-            const name = document.getElementById('payName').value;
-            const email = document.getElementById('payEmail').value;
-            const senderName = document.getElementById('paySenderName').value;
-
             btn.disabled = true;
             btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing...`;
             lucide.createIcons();
 
-            // Generate passcode instantly in the frontend
             const generatedPasscode = Math.random().toString(36).substring(2, 8).toUpperCase();
-
             const payload = {
                 action: "buyCourse",
                 courseTitle: currentCheckoutCourse,
-                name: name,
-                email: email,
-                transactionId: senderName,
-                passcode: generatedPasscode // Sending it to your Google Sheet
+                name: document.getElementById('payName').value,
+                email: document.getElementById('payEmail').value,
+                transactionId: document.getElementById('paySenderName').value,
+                passcode: generatedPasscode
             };
 
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', 
+                    method: 'POST', mode: 'no-cors', 
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
@@ -499,61 +557,48 @@
                     document.getElementById('paymentForm').classList.add('hidden');
                     document.getElementById('generatedCodeDisplay').innerText = generatedPasscode;
                     document.getElementById('paymentSuccess').classList.remove('hidden');
-                }, 1500);
-
+                }, 1000);
             } catch (error) {
-                alert("An error occurred. Please try again.");
                 btn.disabled = false;
                 btn.innerHTML = `<span>Submit Payment Details</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
                 lucide.createIcons();
             }
         }
 
-        // Verify Passcode & Redirect securely
         async function verifyPasscode(event) {
             event.preventDefault();
-            
             const btn = document.getElementById('passcodeSubmitBtn');
             const codeInput = document.getElementById('entryPasscode').value.trim().toUpperCase();
             const errorDiv = document.getElementById('passcodeError');
             
             errorDiv.classList.add('hidden');
             btn.disabled = true;
-            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Verifying...`;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Verifying...`;
             lucide.createIcons();
 
             try {
-                const verifyUrl = `${GOOGLE_SCRIPT_URL}?action=verifyPasscode&courseTitle=${encodeURIComponent(currentCheckoutCourse)}&passcode=${encodeURIComponent(codeInput)}`;
-                
-                const response = await fetch(verifyUrl);
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=verifyPasscode&courseTitle=${encodeURIComponent(currentCheckoutCourse)}&passcode=${encodeURIComponent(codeInput)}`);
                 const data = await response.json();
                 
                 if (data.status === "success") {
-                    btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Unlocked!`;
+                    btn.classList.replace('bg-orange-500', 'bg-emerald-500');
+                    btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i> Access Granted!`;
                     lucide.createIcons();
-                    
-                    const separator = currentAppUrl.includes('?') ? '&' : '?';
-                    window.location.href = currentAppUrl + separator + "access_token=" + codeInput;
+                    const sep = currentAppUrl.includes('?') ? '&' : '?';
+                    setTimeout(() => { window.location.href = currentAppUrl + sep + "access_token=" + codeInput; }, 800);
                 } else {
-                    throw new Error(data.message || "Invalid Passcode.");
+                    throw new Error(data.message);
                 }
-
             } catch (error) {
                 errorDiv.innerText = error.message;
                 errorDiv.classList.remove('hidden');
                 btn.disabled = false;
-                btn.innerHTML = `<span>Unlock Course</span><i data-lucide="unlock" class="w-4 h-4"></i>`;
+                btn.innerHTML = `<span>Unlock Course</span> <i data-lucide="unlock" class="w-5 h-5"></i>`;
                 lucide.createIcons();
             }
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('accessModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-
+        window.onclick = e => { if (e.target == document.getElementById('accessModal')) closeModal(); }
         window.onload = fetchData;
     </script>
 </body>
