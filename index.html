@@ -195,7 +195,8 @@
                                 </div>
                             </div>
 
-                            <input type="text" id="payTxnId" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none text-sm transition font-mono uppercase" placeholder="Enter 12-digit UPI Ref Number">
+                            <label class="block text-xs font-semibold text-slate-700 mt-2 mb-1">Payment Sender Name</label>
+                            <input type="text" id="paySenderName" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none text-sm transition" placeholder="Name of the person who made the payment">
                         </div>
                     </div>
 
@@ -235,7 +236,14 @@
                         <i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-600"></i>
                     </div>
                     <h4 class="text-xl font-bold text-slate-800 mb-2">Payment Submitted!</h4>
-                    <p class="text-slate-600 text-sm mb-6">We will manually verify your transaction and send the entry passcode to your email shortly. Once received, use the "I have a Passcode" tab to unlock the course.</p>
+                    
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                        <p class="text-xs text-orange-800 font-bold uppercase tracking-wider mb-1">Your Entry Passcode</p>
+                        <p id="generatedCodeDisplay" class="text-3xl font-mono font-black text-orange-600 tracking-widest">XXXXXX</p>
+                        <p class="text-xs text-orange-700 mt-2 font-medium">⚠️ Save this code now! It will not be shown again.</p>
+                    </div>
+                    
+                    <p class="text-slate-600 text-sm mb-6">We will manually verify your payment. Your passcode will be activated in approximately 10 minutes. Once active, use the "I have a Passcode" tab to unlock the course.</p>
                     <button type="button" onclick="closeModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 px-6 rounded-lg transition">Close</button>
                 </div>
             </div>
@@ -461,18 +469,22 @@
             const btn = document.getElementById('paySubmitBtn');
             const name = document.getElementById('payName').value;
             const email = document.getElementById('payEmail').value;
-            const txnId = document.getElementById('payTxnId').value;
+            const senderName = document.getElementById('paySenderName').value;
 
             btn.disabled = true;
             btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing...`;
             lucide.createIcons();
+
+            // Generate passcode instantly in the frontend
+            const generatedPasscode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
             const payload = {
                 action: "buyCourse",
                 courseTitle: currentCheckoutCourse,
                 name: name,
                 email: email,
-                transactionId: txnId
+                transactionId: senderName,
+                passcode: generatedPasscode // Sending it to your Google Sheet
             };
 
             try {
@@ -485,6 +497,7 @@
                 
                 setTimeout(() => {
                     document.getElementById('paymentForm').classList.add('hidden');
+                    document.getElementById('generatedCodeDisplay').innerText = generatedPasscode;
                     document.getElementById('paymentSuccess').classList.remove('hidden');
                 }, 1500);
 
