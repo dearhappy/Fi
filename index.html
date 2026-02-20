@@ -132,14 +132,14 @@
 
     </main>
 
-    <!-- Payment & Passcode Modal -->
-    <div id="paymentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
+    <!-- Unified Access Modal (Payment & Passcode) -->
+    <div id="accessModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden modal-enter">
             <!-- Modal Header -->
             <div class="bg-slate-900 px-6 py-4 flex justify-between items-center border-b border-slate-800">
                 <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                    <i data-lucide="lock" class="w-5 h-5 text-orange-500"></i>
-                    Secure Checkout
+                    <i data-lucide="shield" class="w-5 h-5 text-orange-500"></i>
+                    Course Access
                 </h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white transition">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -148,15 +148,22 @@
             
             <!-- Modal Body -->
             <div class="p-6">
-                <div class="mb-6 pb-6 border-b border-slate-100 text-center">
-                    <p class="text-sm text-slate-500 font-medium mb-1">You are enrolling in:</p>
+                <div class="mb-5 pb-5 border-b border-slate-100 text-center">
+                    <p class="text-sm text-slate-500 font-medium mb-1">Module:</p>
                     <h4 id="modalCourseTitle" class="text-xl font-bold text-slate-800">Course Name</h4>
-                    <div class="mt-3 inline-flex items-center justify-center gap-2 bg-orange-50 text-orange-600 font-bold px-4 py-2 rounded-lg border border-orange-100">
-                        Total Amount: <span id="modalCoursePrice" class="text-2xl">₹0</span>
-                    </div>
                 </div>
 
+                <!-- Tabs -->
+                <div class="flex bg-slate-100 p-1 rounded-lg mb-6">
+                    <button type="button" onclick="switchTab('pay')" id="tabPay" class="flex-1 py-2 text-sm font-bold bg-white text-slate-800 rounded-md shadow-sm transition">Buy Access</button>
+                    <button type="button" onclick="switchTab('code')" id="tabCode" class="flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 rounded-md transition">I have a Passcode</button>
+                </div>
+
+                <!-- TAB 1: Payment Form -->
                 <form id="paymentForm" onsubmit="submitPayment(event)">
+                    <div class="mb-4 inline-flex items-center justify-center gap-2 bg-orange-50 text-orange-600 font-bold px-4 py-2 rounded-lg border border-orange-100 w-full">
+                        Total Amount: <span id="modalCoursePrice" class="text-2xl">₹0</span>
+                    </div>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Full Name</label>
@@ -181,10 +188,32 @@
                         </div>
                     </div>
 
-                    <div class="mt-8">
+                    <div class="mt-6">
                         <button type="submit" id="paySubmitBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex justify-center items-center gap-2">
                             <span>Verify Payment & Get Code</span>
                             <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- TAB 2: Passcode Entry Form -->
+                <form id="passcodeForm" class="hidden" onsubmit="verifyPasscode(event)">
+                    <div class="bg-blue-50 text-blue-800 p-4 rounded-xl border border-blue-100 mb-6 flex gap-3">
+                        <i data-lucide="mail" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                        <p class="text-sm">Please check your email for the 6-character entry passcode sent after your payment.</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Enter Passcode</label>
+                        <input type="text" id="entryPasscode" required class="w-full px-4 py-4 text-center tracking-[0.5em] font-mono text-xl uppercase rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="XXXXXX" maxlength="6">
+                    </div>
+                    
+                    <div id="passcodeError" class="hidden text-red-500 text-sm font-medium mt-3 text-center"></div>
+
+                    <div class="mt-6">
+                        <button type="submit" id="passcodeSubmitBtn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition flex justify-center items-center gap-2">
+                            <span>Unlock Course</span>
+                            <i data-lucide="unlock" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </form>
@@ -195,8 +224,8 @@
                         <i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-600"></i>
                     </div>
                     <h4 class="text-xl font-bold text-slate-800 mb-2">Passcode Sent!</h4>
-                    <p class="text-slate-600 text-sm mb-6">Check your email. We've sent your one-time entry code and instructions to access the module.</p>
-                    <button onclick="closeModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-6 rounded-lg transition">Close</button>
+                    <p class="text-slate-600 text-sm mb-6">Check your email. We've sent your one-time entry code. Please switch to the "I have a Passcode" tab to unlock the course.</p>
+                    <button type="button" onclick="switchTab('code')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-6 rounded-lg transition">Enter Passcode</button>
                 </div>
             </div>
         </div>
@@ -217,6 +246,7 @@
 
         let globalData = [];
         let currentCheckoutCourse = "";
+        let currentAppUrl = "";
 
         // Initialize Lucide Icons
         lucide.createIcons();
@@ -298,7 +328,7 @@
                 
                 // If paid, open modal. If free, open link directly.
                 const clickAction = isPaid 
-                    ? `event.preventDefault(); openPaymentModal('${item.Title.replace(/'/g, "\\'")}', '${item.Price}');` 
+                    ? `event.preventDefault(); openAccessModal('${item.Title.replace(/'/g, "\\'")}', '${item.Price}', '${item.App_URL}');` 
                     : ``;
 
                 const cardHTML = `
@@ -345,24 +375,50 @@
         }
 
         // Modal Functions
-        function openPaymentModal(title, price) {
+        function openAccessModal(title, price, url) {
             currentCheckoutCourse = title;
+            currentAppUrl = url;
             document.getElementById('modalCourseTitle').innerText = title;
             document.getElementById('modalCoursePrice').innerText = `₹${price}`;
             
-            // Reset Form State
+            // Reset state to Pay tab
+            switchTab('pay');
             document.getElementById('paymentForm').reset();
-            document.getElementById('paymentForm').classList.remove('hidden');
+            document.getElementById('passcodeForm').reset();
             document.getElementById('paymentSuccess').classList.add('hidden');
+            document.getElementById('passcodeError').classList.add('hidden');
+            
             document.getElementById('paySubmitBtn').innerHTML = `<span>Verify Payment & Get Code</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
             document.getElementById('paySubmitBtn').disabled = false;
             
-            document.getElementById('paymentModal').classList.remove('hidden');
+            document.getElementById('accessModal').classList.remove('hidden');
             lucide.createIcons();
         }
 
         function closeModal() {
-            document.getElementById('paymentModal').classList.add('hidden');
+            document.getElementById('accessModal').classList.add('hidden');
+        }
+
+        function switchTab(tab) {
+            const tabPay = document.getElementById('tabPay');
+            const tabCode = document.getElementById('tabCode');
+            const formPay = document.getElementById('paymentForm');
+            const formCode = document.getElementById('passcodeForm');
+            const successMsg = document.getElementById('paymentSuccess');
+
+            successMsg.classList.add('hidden');
+
+            if (tab === 'pay') {
+                tabPay.className = "flex-1 py-2 text-sm font-bold bg-white text-slate-800 rounded-md shadow-sm transition";
+                tabCode.className = "flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 rounded-md transition";
+                formPay.classList.remove('hidden');
+                formCode.classList.add('hidden');
+            } else {
+                tabCode.className = "flex-1 py-2 text-sm font-bold bg-white text-slate-800 rounded-md shadow-sm transition";
+                tabPay.className = "flex-1 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 rounded-md transition";
+                formCode.classList.remove('hidden');
+                formPay.classList.add('hidden');
+            }
         }
 
         // Handle Payment Submission via Google Apps Script POST
@@ -374,7 +430,6 @@
             const email = document.getElementById('payEmail').value;
             const txnId = document.getElementById('payTxnId').value;
 
-            // Show Loading State
             btn.disabled = true;
             btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing...`;
             lucide.createIcons();
@@ -388,31 +443,70 @@
             };
 
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                // Post to GAS. Using no-cors prevents reading response but avoids CORS errors on simple POSTs
+                await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // no-cors used because GAS doesn't return standard CORS headers on POST
+                    mode: 'no-cors', 
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
                 
-                // Because of no-cors, we assume success if it doesn't throw a network error.
-                // In a perfect world, we'd setup a proxy, but for static HTML + GAS, this is the standard approach.
                 setTimeout(() => {
                     document.getElementById('paymentForm').classList.add('hidden');
                     document.getElementById('paymentSuccess').classList.remove('hidden');
                 }, 1500);
 
             } catch (error) {
-                alert("An error occurred while processing your request. Please try again.");
+                alert("An error occurred. Please try again.");
                 btn.disabled = false;
                 btn.innerHTML = `<span>Verify Payment & Get Code</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
                 lucide.createIcons();
             }
         }
 
+        // Verify Passcode & Redirect securely
+        async function verifyPasscode(event) {
+            event.preventDefault();
+            
+            const btn = document.getElementById('passcodeSubmitBtn');
+            const codeInput = document.getElementById('entryPasscode').value.trim().toUpperCase();
+            const errorDiv = document.getElementById('passcodeError');
+            
+            errorDiv.classList.add('hidden');
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Verifying...`;
+            lucide.createIcons();
+
+            try {
+                // To verify, we'll hit the GET endpoint with parameters
+                const verifyUrl = `${GOOGLE_SCRIPT_URL}?action=verifyPasscode&courseTitle=${encodeURIComponent(currentCheckoutCourse)}&passcode=${encodeURIComponent(codeInput)}`;
+                
+                const response = await fetch(verifyUrl);
+                const data = await response.json();
+                
+                if (data.status === "success") {
+                    // SECURE REDIRECT: Add the access token to the URL so the target app can save it
+                    btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Unlocked!`;
+                    lucide.createIcons();
+                    
+                    const separator = currentAppUrl.includes('?') ? '&' : '?';
+                    window.location.href = currentAppUrl + separator + "access_token=" + codeInput;
+                } else {
+                    throw new Error(data.message || "Invalid Passcode.");
+                }
+
+            } catch (error) {
+                errorDiv.innerText = error.message;
+                errorDiv.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerHTML = `<span>Unlock Course</span><i data-lucide="unlock" class="w-4 h-4"></i>`;
+                lucide.createIcons();
+            }
+        }
+
         // Close modal on clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('paymentModal');
+            const modal = document.getElementById('accessModal');
             if (event.target == modal) {
                 closeModal();
             }
