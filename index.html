@@ -27,6 +27,13 @@
             transform: translateY(-4px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
+        
+        /* Modal Animation */
+        .modal-enter { animation: modalFadeIn 0.3s ease-out forwards; }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -101,58 +108,11 @@
         <!-- Loading State (Skeleton Loaders) -->
         <div id="loading" class="w-full">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Skeleton Card 1 -->
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm">
-                    <div class="h-40 w-full bg-slate-200 animate-pulse"></div>
-                    <div class="p-5 flex flex-col flex-grow gap-3">
-                        <div class="h-6 bg-slate-200 rounded-md w-3/4 animate-pulse"></div>
-                        <div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div>
-                        <div class="h-4 bg-slate-200 rounded-md w-5/6 animate-pulse"></div>
-                        <div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center">
-                            <div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div>
-                            <div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skeleton Card 2 -->
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden sm:flex">
-                    <div class="h-40 w-full bg-slate-200 animate-pulse"></div>
-                    <div class="p-5 flex flex-col flex-grow gap-3">
-                        <div class="h-6 bg-slate-200 rounded-md w-2/3 animate-pulse"></div>
-                        <div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div>
-                        <div class="h-4 bg-slate-200 rounded-md w-4/5 animate-pulse"></div>
-                        <div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center">
-                            <div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div>
-                            <div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skeleton Card 3 -->
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden lg:flex">
-                    <div class="h-40 w-full bg-slate-200 animate-pulse"></div>
-                    <div class="p-5 flex flex-col flex-grow gap-3">
-                        <div class="h-6 bg-slate-200 rounded-md w-3/4 animate-pulse"></div>
-                        <div class="h-4 bg-slate-200 rounded-md w-11/12 animate-pulse mt-2"></div>
-                        <div class="h-4 bg-slate-200 rounded-md w-4/6 animate-pulse"></div>
-                        <div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center">
-                            <div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div>
-                            <div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skeleton Card 4 -->
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden xl:flex">
-                    <div class="h-40 w-full bg-slate-200 animate-pulse"></div>
-                    <div class="p-5 flex flex-col flex-grow gap-3">
-                        <div class="h-6 bg-slate-200 rounded-md w-1/2 animate-pulse"></div>
-                        <div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div>
-                        <div class="h-4 bg-slate-200 rounded-md w-5/6 animate-pulse"></div>
-                        <div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center">
-                            <div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div>
-                            <div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Skeleton cards truncated for brevity in editor, keep original structure -->
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm"><div class="h-40 w-full bg-slate-200 animate-pulse"></div><div class="p-5 flex flex-col flex-grow gap-3"><div class="h-6 bg-slate-200 rounded-md w-3/4 animate-pulse"></div><div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div><div class="h-4 bg-slate-200 rounded-md w-5/6 animate-pulse"></div><div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center"><div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div><div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div></div></div></div>
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden sm:flex"><div class="h-40 w-full bg-slate-200 animate-pulse"></div><div class="p-5 flex flex-col flex-grow gap-3"><div class="h-6 bg-slate-200 rounded-md w-2/3 animate-pulse"></div><div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div><div class="h-4 bg-slate-200 rounded-md w-4/5 animate-pulse"></div><div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center"><div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div><div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div></div></div></div>
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden lg:flex"><div class="h-40 w-full bg-slate-200 animate-pulse"></div><div class="p-5 flex flex-col flex-grow gap-3"><div class="h-6 bg-slate-200 rounded-md w-3/4 animate-pulse"></div><div class="h-4 bg-slate-200 rounded-md w-11/12 animate-pulse mt-2"></div><div class="h-4 bg-slate-200 rounded-md w-4/6 animate-pulse"></div><div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center"><div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div><div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div></div></div></div>
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm hidden xl:flex"><div class="h-40 w-full bg-slate-200 animate-pulse"></div><div class="p-5 flex flex-col flex-grow gap-3"><div class="h-6 bg-slate-200 rounded-md w-1/2 animate-pulse"></div><div class="h-4 bg-slate-200 rounded-md w-full animate-pulse mt-2"></div><div class="h-4 bg-slate-200 rounded-md w-5/6 animate-pulse"></div><div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center"><div class="h-4 bg-slate-200 rounded-md w-1/3 animate-pulse"></div><div class="h-5 w-5 bg-slate-200 rounded-full animate-pulse"></div></div></div></div>
             </div>
         </div>
 
@@ -172,6 +132,76 @@
 
     </main>
 
+    <!-- Payment & Passcode Modal -->
+    <div id="paymentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden modal-enter">
+            <!-- Modal Header -->
+            <div class="bg-slate-900 px-6 py-4 flex justify-between items-center border-b border-slate-800">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                    <i data-lucide="lock" class="w-5 h-5 text-orange-500"></i>
+                    Secure Checkout
+                </h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6">
+                <div class="mb-6 pb-6 border-b border-slate-100 text-center">
+                    <p class="text-sm text-slate-500 font-medium mb-1">You are enrolling in:</p>
+                    <h4 id="modalCourseTitle" class="text-xl font-bold text-slate-800">Course Name</h4>
+                    <div class="mt-3 inline-flex items-center justify-center gap-2 bg-orange-50 text-orange-600 font-bold px-4 py-2 rounded-lg border border-orange-100">
+                        Total Amount: <span id="modalCoursePrice" class="text-2xl">₹0</span>
+                    </div>
+                </div>
+
+                <form id="paymentForm" onsubmit="submitPayment(event)">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Full Name</label>
+                            <input type="text" id="payName" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
+                            <input type="email" id="payEmail" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="john@example.com">
+                            <p class="text-xs text-slate-500 mt-1"><i data-lucide="info" class="w-3 h-3 inline"></i> Your passcode will be sent here.</p>
+                        </div>
+                        
+                        <!-- Simulated Payment Section (UPI/Bank) -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mt-4">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Complete Payment</label>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-12 h-12 bg-white border border-slate-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="qr-code" class="w-6 h-6 text-slate-800"></i>
+                                </div>
+                                <p class="text-xs text-slate-600">Scan QR or pay to UPI ID: <strong>fieldincharge@upi</strong>, then enter the Transaction ID below.</p>
+                            </div>
+                            <input type="text" id="payTxnId" required class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-orange-500 outline-none text-sm" placeholder="e.g. UPI Ref: 123456789012">
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <button type="submit" id="paySubmitBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex justify-center items-center gap-2">
+                            <span>Verify Payment & Get Code</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success State (Hidden by default) -->
+                <div id="paymentSuccess" class="hidden text-center py-6">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-600"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-800 mb-2">Passcode Sent!</h4>
+                    <p class="text-slate-600 text-sm mb-6">Check your email. We've sent your one-time entry code and instructions to access the module.</p>
+                    <button onclick="closeModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-6 rounded-lg transition">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 mt-auto">
         <div class="max-w-7xl mx-auto px-4 py-6 text-center">
@@ -186,11 +216,10 @@
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-aCqolBYp4-dsRshFmIJ2KIQgaotBgeXI2FBUmmRYDdcTCRnioxc5PdNY-K3Zcobu/exec";
 
         let globalData = [];
+        let currentCheckoutCourse = "";
 
         // Initialize Lucide Icons
         lucide.createIcons();
-
-        // Set Dates (Current Date removed from banner, year kept for footer)
         document.getElementById('year').innerText = new Date().getFullYear();
 
         // Fetch Data from Google Sheets
@@ -200,7 +229,6 @@
             const errorText = document.getElementById('errorText');
             const grid = document.getElementById('appGrid');
             
-            // UI Reset
             loading.classList.remove('hidden');
             error.classList.add('hidden');
             grid.classList.add('hidden');
@@ -211,21 +239,17 @@
                     throw new Error("You haven't pasted your Web App URL into the code yet.");
                 }
 
-                // Fetching with redirect follow for Google Apps Script
                 const response = await fetch(GOOGLE_SCRIPT_URL, { redirect: 'follow' });
-                
-                // Read as raw text first to catch hidden HTML/Login pages
                 const rawText = await response.text();
                 
                 let data;
                 try {
                     data = JSON.parse(rawText);
                 } catch (parseError) {
-                    console.error("Raw response from Google:", rawText);
                     if (rawText.includes("<html")) {
-                        throw new Error("Google returned a webpage instead of data. Fix: Change deployment access from 'Anyone with a Google Account' to 'Anyone'.");
+                        throw new Error("Google returned a webpage instead of data. Fix: Change deployment access to 'Anyone'.");
                     }
-                    throw new Error("Invalid data format received. Check console for details.");
+                    throw new Error("Invalid data format received.");
                 }
                 
                 if(data.error) throw new Error("Spreadsheet Error: " + data.error);
@@ -237,8 +261,7 @@
                 grid.classList.remove('hidden');
 
             } catch (err) {
-                console.error("Fetch Error:", err);
-                errorText.innerText = err.message || "Please check your Google Apps Script URL and ensure the sheet is deployed correctly.";
+                errorText.innerText = err.message || "Please check your Google Apps Script URL.";
                 loading.classList.add('hidden');
                 error.classList.remove('hidden');
             }
@@ -247,7 +270,7 @@
         // Render Items to Grid
         function renderItems(filterCategory) {
             const grid = document.getElementById('appGrid');
-            grid.innerHTML = ''; // Clear current
+            grid.innerHTML = ''; 
 
             const filteredData = filterCategory === 'All' 
                 ? globalData 
@@ -259,7 +282,6 @@
             }
 
             filteredData.forEach(item => {
-                // Determine icon based on category
                 let iconName = 'layout-grid';
                 let badgeColor = 'bg-blue-100 text-blue-700';
                 
@@ -267,23 +289,34 @@
                 if(item.Category === 'Course') { iconName = 'graduation-cap'; badgeColor = 'bg-emerald-100 text-emerald-700'; }
                 if(item.Category === 'Training') { iconName = 'presentation'; badgeColor = 'bg-orange-100 text-orange-700'; }
 
+                // Check if item is Paid (Assumes a 'Price' column exists in sheet)
+                const isPaid = item.Price && item.Price.toString().toLowerCase() !== 'free' && item.Price !== '0' && item.Price !== '';
+                
+                const actionText = isPaid ? `Enroll Now - ₹${item.Price}` : `Open Application`;
+                const actionIcon = isPaid ? 'lock' : 'arrow-right';
+                const actionClass = isPaid ? 'text-orange-600 font-bold' : 'text-slate-700 font-semibold';
+                
+                // If paid, open modal. If free, open link directly.
+                const clickAction = isPaid 
+                    ? `event.preventDefault(); openPaymentModal('${item.Title.replace(/'/g, "\\'")}', '${item.Price}');` 
+                    : ``;
+
                 const cardHTML = `
-                    <a href="${item.App_URL}" target="_blank" class="card-hover bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full group">
-                        <!-- Image Container -->
+                    <a href="${item.App_URL}" target="${isPaid ? '_self' : '_blank'}" onclick="${clickAction}" class="card-hover bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col h-full group">
                         <div class="h-40 w-full bg-slate-100 relative overflow-hidden">
                             <img src="${item.Image_URL}" alt="${item.Title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=500&q=80'; this.onerror=null;">
                             <div class="absolute top-3 left-3 ${badgeColor} text-xs font-bold px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1 backdrop-blur-md bg-opacity-90">
                                 <i data-lucide="${iconName}" class="w-3 h-3"></i>
                                 ${item.Category}
                             </div>
+                            ${isPaid ? `<div class="absolute top-3 right-3 bg-slate-900 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">Paid</div>` : ''}
                         </div>
-                        <!-- Content Container -->
                         <div class="p-5 flex flex-col flex-grow">
                             <h3 class="text-lg font-bold text-slate-800 mb-2 leading-tight group-hover:text-orange-600 transition">${item.Title}</h3>
                             <p class="text-sm text-slate-500 flex-grow mb-4">${item.Description}</p>
-                            <div class="flex items-center justify-between text-sm font-semibold text-slate-700 mt-auto pt-4 border-t border-slate-100">
-                                <span>Open Application</span>
-                                <i data-lucide="arrow-right" class="w-4 h-4 text-orange-500 transform group-hover:translate-x-1 transition"></i>
+                            <div class="flex items-center justify-between text-sm ${actionClass} mt-auto pt-4 border-t border-slate-100">
+                                <span>${actionText}</span>
+                                <i data-lucide="${actionIcon}" class="w-4 h-4 ${isPaid ? 'text-orange-600' : 'text-orange-500'} transform group-hover:translate-x-1 transition"></i>
                             </div>
                         </div>
                     </a>
@@ -291,13 +324,11 @@
                 grid.insertAdjacentHTML('beforeend', cardHTML);
             });
             
-            // Re-initialize icons for newly added HTML
             lucide.createIcons();
         }
 
-        // Handle Filter Button Clicks
+        // Handle Filters
         function filterItems(category) {
-            // Update button styles
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => {
                 if(btn.innerText.includes(category) || (category === 'All' && btn.innerText.includes('All'))) {
@@ -310,14 +341,84 @@
                     btn.classList.add('border', 'border-slate-200', 'hover:bg-slate-50');
                 }
             });
-
-            // Render filtered items
             renderItems(category);
         }
 
-        // Initial fetch on page load
-        window.onload = fetchData;
+        // Modal Functions
+        function openPaymentModal(title, price) {
+            currentCheckoutCourse = title;
+            document.getElementById('modalCourseTitle').innerText = title;
+            document.getElementById('modalCoursePrice').innerText = `₹${price}`;
+            
+            // Reset Form State
+            document.getElementById('paymentForm').reset();
+            document.getElementById('paymentForm').classList.remove('hidden');
+            document.getElementById('paymentSuccess').classList.add('hidden');
+            document.getElementById('paySubmitBtn').innerHTML = `<span>Verify Payment & Get Code</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+            document.getElementById('paySubmitBtn').disabled = false;
+            
+            document.getElementById('paymentModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
 
+        function closeModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+        }
+
+        // Handle Payment Submission via Google Apps Script POST
+        async function submitPayment(event) {
+            event.preventDefault();
+            
+            const btn = document.getElementById('paySubmitBtn');
+            const name = document.getElementById('payName').value;
+            const email = document.getElementById('payEmail').value;
+            const txnId = document.getElementById('payTxnId').value;
+
+            // Show Loading State
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing...`;
+            lucide.createIcons();
+
+            const payload = {
+                action: "buyCourse",
+                courseTitle: currentCheckoutCourse,
+                name: name,
+                email: email,
+                transactionId: txnId
+            };
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // no-cors used because GAS doesn't return standard CORS headers on POST
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                // Because of no-cors, we assume success if it doesn't throw a network error.
+                // In a perfect world, we'd setup a proxy, but for static HTML + GAS, this is the standard approach.
+                setTimeout(() => {
+                    document.getElementById('paymentForm').classList.add('hidden');
+                    document.getElementById('paymentSuccess').classList.remove('hidden');
+                }, 1500);
+
+            } catch (error) {
+                alert("An error occurred while processing your request. Please try again.");
+                btn.disabled = false;
+                btn.innerHTML = `<span>Verify Payment & Get Code</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+                lucide.createIcons();
+            }
+        }
+
+        // Close modal on clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        window.onload = fetchData;
     </script>
 </body>
 </html>
