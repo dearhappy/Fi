@@ -231,8 +231,9 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-aCqolBYp4-dsRshFmIJ2KIQgaotBgeXI2FBUmmRYDdcTCRnioxc5PdNY-K3Zcobu/exec";
 
         // --- GLOBAL STATE ---
-        const CATEGORIES = ["Software's", "Courses", "Training", "Certificates"];
-        const MENU_PAGES = ["Home", ...CATEGORIES, "Members"]; // Home is the 1st page
+        // Added "Samples" to the categories and menu array!
+        const CATEGORIES = ["Samples", "Software's", "Courses", "Training", "Certificates"];
+        const MENU_PAGES = ["Home", ...CATEGORIES, "Members"]; 
         let currentPage = "Home";
         let currentSelectedProduct = null;
         let activeDataList = []; 
@@ -374,7 +375,11 @@
                 renderMembers(activeDataList);
             } else {
                 document.getElementById('pageHeader').classList.remove('hidden');
-                document.getElementById('headerTitle').innerText = pageName;
+                
+                // Format header title slightly for free samples
+                document.getElementById('headerTitle').innerText = pageName === 'Samples' ? 'Free Samples' : pageName;
+                document.getElementById('headerDesc').innerText = pageName === 'Samples' ? 'Test out our premium offerings completely free of charge.' : 'Browse our exclusive digital resources securely locked for premium members.';
+                
                 document.getElementById('resourcesSection').classList.remove('hidden');
                 renderProducts(activeDataList, 'productsGrid');
             }
@@ -389,11 +394,16 @@
             CATEGORIES.forEach(cat => {
                 const categoryItems = homeData[cat] || [];
                 if(categoryItems.length > 0) {
+                    // Update section title text and icon depending on if it's the free samples or not
+                    const isSamples = cat === 'Samples';
+                    const sectionTitleText = isSamples ? 'Free Samples' : `${cat} Preview`;
+                    const iconName = isSamples ? 'gift' : 'folder';
+
                     const sectionHTML = `
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
                                 <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                    <i data-lucide="folder" class="w-5 h-5 text-primary"></i> ${cat} Sample
+                                    <i data-lucide="${iconName}" class="w-5 h-5 text-primary"></i> ${sectionTitleText}
                                 </h2>
                                 <button onclick="switchPage('${cat}')" class="text-sm font-semibold text-primary hover:text-primaryHover bg-blue-50 px-3 py-1 rounded-full transition-colors">View All</button>
                             </div>
@@ -456,6 +466,8 @@
                 const desc = p.desc || p.description || 'No description available.';
                 const price = p.price || 'Free';
                 const photoUrl = p.photo || p.photoUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=600&h=400';
+                
+                // Samples are intentionally forced to 'unlocked: true' on the backend
                 const isUnlocked = p.unlocked === true || p.unlocked === "true";
 
                 const card = document.createElement('div');
@@ -470,6 +482,7 @@
                     }
                 };
 
+                // The download icon appears if the item is unlocked (which includes all free samples!)
                 card.innerHTML = `
                     <div class="h-40 overflow-hidden relative bg-gray-100">
                         <img src="${photoUrl}" alt="${title}" class="w-full h-full object-cover ${isUnlocked ? '' : 'blurred-content'}">
@@ -481,7 +494,7 @@
                         </div>` : `
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-primary/80 backdrop-blur-[1px]">
                             <div class="bg-white p-3 rounded-full shadow-lg">
-                                <i data-lucide="download" class="w-5 h-5 text-primary"></i>
+                                <i data-lucide="${p.category === 'Samples' ? 'external-link' : 'download'}" class="w-5 h-5 text-primary"></i>
                             </div>
                         </div>
                         `}
@@ -489,7 +502,7 @@
                     <div class="p-4">
                         <div class="flex justify-between items-start mb-2 gap-2">
                             <h3 class="font-bold text-gray-900 line-clamp-1 flex-1 text-sm">${title}</h3>
-                            <span class="text-primary font-bold text-xs bg-blue-50 px-2 py-1 rounded whitespace-nowrap">${price}</span>
+                            <span class="${isUnlocked && p.price === 'Free' ? 'text-green-700 bg-green-50' : 'text-primary bg-blue-50'} font-bold text-xs px-2 py-1 rounded whitespace-nowrap">${price}</span>
                         </div>
                         <p class="text-gray-500 text-xs line-clamp-2">${desc}</p>
                     </div>
