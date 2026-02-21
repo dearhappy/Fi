@@ -87,7 +87,7 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full relative">
         
-        <!-- Loading State (Updated with sleek animation) -->
+        <!-- Loading State -->
         <div id="loadingState" class="absolute inset-0 z-50 flex flex-col items-center justify-center pt-20 hidden bg-gray-50/80 backdrop-blur-[2px] transition-opacity">
             <div class="relative flex justify-center items-center mb-6">
                 <!-- Pulsing Effect -->
@@ -336,10 +336,10 @@
                                         <input type="text" id="otpInput" placeholder="Enter Code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary mb-3">
                                         <button onclick="verifyOTP()" id="btnVerifyOTP" class="w-full bg-primary hover:bg-primaryHover text-white font-medium py-2 px-4 rounded-md transition-colors flex justify-center items-center gap-2">Verify & Unlock</button>
                                     </div>
-                                    <!-- Payment Section -->
+                                    <!-- Payment Section (Updated to require Member ID) -->
                                     <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100">
                                         <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2"><i data-lucide="credit-card" class="w-4 h-4 text-primary"></i> Need a Code?</h4>
-                                        <p class="text-xs text-gray-500 mb-3">Pay via UPI and submit your details to receive an access code.</p>
+                                        <p class="text-xs text-gray-500 mb-3">Pay via UPI and submit your details to receive an access code. <strong class="text-gray-700">Members only.</strong></p>
                                         
                                         <div class="bg-white p-3 rounded border border-gray-200 mb-4 text-center">
                                             <!-- Real QR Code Image -->
@@ -353,6 +353,8 @@
                                         </div>
 
                                         <div class="space-y-3">
+                                            <!-- New Member ID Field -->
+                                            <input type="text" id="payMemberId" placeholder="Your Member ID (e.g. FI-001)" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary uppercase">
                                             <input type="text" id="payName" placeholder="Your Name" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
                                             <input type="tel" id="payMobile" placeholder="Mobile Number" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
                                             <button onclick="submitPayment()" id="btnSubmitPayment" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm">Submit Payment Details</button>
@@ -838,6 +840,9 @@
             document.getElementById('modalTitle').innerText = productObj.title || 'Product';
             document.getElementById('modalDesc').innerText = productObj.desc || productObj.description || '';
             document.getElementById('modalPrice').innerText = productObj.price || '';
+            
+            // Reset Inputs
+            document.getElementById('payMemberId').value = '';
             document.getElementById('otpInput').value = '';
             document.getElementById('payName').value = '';
             document.getElementById('payMobile').value = '';
@@ -888,24 +893,36 @@
         }
 
         function submitPayment() {
+            const memberId = document.getElementById('payMemberId').value.trim().toUpperCase();
             const name = document.getElementById('payName').value.trim();
             const mobile = document.getElementById('payMobile').value.trim();
             const btn = document.getElementById('btnSubmitPayment');
 
-            if(!name || !mobile) return showToast("Fill all details.", "error");
+            if(!memberId || !name || !mobile) {
+                return showToast("Please fill all details, including your Member ID.", "error");
+            }
+            if(!memberId.startsWith('FI-')) {
+                return showToast("Invalid Member ID format. Must start with FI-", "error");
+            }
+
             btn.disabled = true;
             btn.innerHTML = 'Submitting...';
 
             // Generate a secure, unique 6-digit access code for this specific user
             const generatedCode = 'AC-' + Math.floor(100000 + Math.random() * 900000);
 
-            // Pass this generated code safely to the Google Sheet backend
-            const url = `${SCRIPT_URL}?action=submitPayment&name=${encodeURIComponent(name)}&mobile=${encodeURIComponent(mobile)}&item=${encodeURIComponent(currentSelectedProduct.title)}&code=${encodeURIComponent(generatedCode)}`;
+            // Pass this generated code safely to the Google Sheet backend along with the Member ID
+            const url = `${SCRIPT_URL}?action=submitPayment&name=${encodeURIComponent(name)}&mobile=${encodeURIComponent(mobile)}&item=${encodeURIComponent(currentSelectedProduct.title)}&code=${encodeURIComponent(generatedCode)}&memberId=${encodeURIComponent(memberId)}`;
 
             fetch(url).then(res => res.json()).then(data => {
                 btn.disabled = false;
                 btn.innerHTML = 'Submit Payment Details';
-                showCodeSuccessScreen(generatedCode);
+                
+                if (data.success || data.status === 'success') {
+                    showCodeSuccessScreen(generatedCode);
+                } else {
+                    showToast(data.message || "Failed to submit. Check your Member ID.", "error");
+                }
             }).catch(() => {
                 btn.disabled = false;
                 btn.innerHTML = 'Submit Payment Details';
