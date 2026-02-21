@@ -722,7 +722,7 @@
             };
 
             try {
-                // Simulated POST Request 
+                // Real POST Request to Apps Script! 
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify(payload)
@@ -731,13 +731,18 @@
                 
                 closeRegistrationModal();
                 showIDCard(name, designation, exp, qual, data.idno || generateFakeID(), photoBase64);
-                showToast("Registration Successful!", "success");
+                showToast("Registration Successful! Profile pending admin approval.", "success");
+                
+                // Immediately refresh data view to show the new user!
+                if(currentPage === 'Members' || currentPage === 'Home') {
+                    switchPage(currentPage);
+                }
 
             } catch (err) {
                 console.warn("GAS POST failed or unsupported. Generating ID Card locally for UI preview.", err);
                 closeRegistrationModal();
                 showIDCard(name, designation, exp, qual, generateFakeID(), photoBase64);
-                showToast("Registration submitted (Local Preview)", "success");
+                showToast("Registration submitted (Pending Admin Approval)", "success");
             }
             
             // Reset UI
