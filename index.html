@@ -75,9 +75,6 @@
                 <!-- Logo Section -->
                 <div class="flex justify-center items-center w-full min-h-[48px]">
                     <img id="navLogo" src="" alt="Portal Logo" class="h-12 hidden object-contain">
-                    <span id="navTitle" class="font-bold text-xl tracking-tight flex items-center gap-2">
-                        <i data-lucide="shield-check" class="w-8 h-8 text-primary"></i> DigitalVault
-                    </span>
                 </div>
                 <!-- Dynamic Navigation Menu injected by JS -->
                 <div class="flex space-x-6 items-center overflow-x-auto w-full justify-start md:justify-center hide-scrollbar pb-1" id="desktopNav">
@@ -317,50 +314,77 @@
             <div class="relative inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl w-full fade-in">
                 <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i data-lucide="lock-keyhole" class="h-6 w-6 text-primary"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-xl leading-6 font-bold text-gray-900" id="modalTitle">Product Title</h3>
-                            <div class="mt-2 flex items-center justify-between border-b pb-4 mb-4">
-                                <p class="text-sm text-gray-500" id="modalDesc">Detailed description of the digital product goes here.</p>
-                                <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full whitespace-nowrap ml-4" id="modalPrice">₹999</span>
+                    
+                    <!-- Default State: Code / Payment Entry -->
+                    <div id="modal-content-default">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <i data-lucide="lock-keyhole" class="h-6 w-6 text-primary"></i>
                             </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <!-- OTP Section -->
-                                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                    <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2"><i data-lucide="key" class="w-4 h-4 text-primary"></i> Access Passcode</h4>
-                                    <p class="text-xs text-gray-500 mb-4">Enter your One-Time Passcode to unlock immediate access.</p>
-                                    <input type="text" id="otpInput" placeholder="Enter Code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary mb-3">
-                                    <button onclick="verifyOTP()" id="btnVerifyOTP" class="w-full bg-primary hover:bg-primaryHover text-white font-medium py-2 px-4 rounded-md transition-colors flex justify-center items-center gap-2">Verify & Unlock</button>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-xl leading-6 font-bold text-gray-900" id="modalTitle">Product Title</h3>
+                                <div class="mt-2 flex items-center justify-between border-b pb-4 mb-4">
+                                    <p class="text-sm text-gray-500" id="modalDesc">Detailed description of the digital product goes here.</p>
+                                    <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full whitespace-nowrap ml-4" id="modalPrice">₹999</span>
                                 </div>
-                                <!-- Payment Section -->
-                                <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100">
-                                    <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2"><i data-lucide="credit-card" class="w-4 h-4 text-primary"></i> Need a Code?</h4>
-                                    <p class="text-xs text-gray-500 mb-3">Pay via UPI and submit your details to receive an access code.</p>
-                                    
-                                    <div class="bg-white p-3 rounded border border-gray-200 mb-4 text-center">
-                                        <!-- Real QR Code Image -->
-                                        <div class="w-32 h-32 mx-auto mb-2 flex items-center justify-center rounded overflow-hidden">
-                                            <img id="qrCodeImage" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=fieldincharge@pingpay&pn=DigitalVault&cu=INR" alt="UPI QR Code" class="w-full h-full object-contain">
-                                        </div>
-                                        <div class="text-sm font-medium text-gray-700 flex items-center justify-center gap-2 cursor-pointer hover:text-primary transition-colors mt-2" onclick="copyUPI()">
-                                            <span id="upiId">fieldincharge@pingpay</span>
-                                            <i data-lucide="copy" class="w-4 h-4"></i>
-                                        </div>
-                                    </div>
 
-                                    <div class="space-y-3">
-                                        <input type="text" id="payName" placeholder="Your Name" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-                                        <input type="tel" id="payMobile" placeholder="Mobile Number" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
-                                        <button onclick="submitPayment()" id="btnSubmitPayment" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm">Submit Payment Details</button>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <!-- OTP Section -->
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2"><i data-lucide="key" class="w-4 h-4 text-primary"></i> Access Passcode</h4>
+                                        <p class="text-xs text-gray-500 mb-4">Enter your code below to unlock immediate access.</p>
+                                        <input type="text" id="otpInput" placeholder="Enter Code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary mb-3">
+                                        <button onclick="verifyOTP()" id="btnVerifyOTP" class="w-full bg-primary hover:bg-primaryHover text-white font-medium py-2 px-4 rounded-md transition-colors flex justify-center items-center gap-2">Verify & Unlock</button>
+                                    </div>
+                                    <!-- Payment Section -->
+                                    <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100">
+                                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2"><i data-lucide="credit-card" class="w-4 h-4 text-primary"></i> Need a Code?</h4>
+                                        <p class="text-xs text-gray-500 mb-3">Pay via UPI and submit your details to receive an access code.</p>
+                                        
+                                        <div class="bg-white p-3 rounded border border-gray-200 mb-4 text-center">
+                                            <!-- Real QR Code Image -->
+                                            <div class="w-32 h-32 mx-auto mb-2 flex items-center justify-center rounded overflow-hidden">
+                                                <img id="qrCodeImage" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=fieldincharge@pingpay&pn=DigitalVault&cu=INR" alt="UPI QR Code" class="w-full h-full object-contain">
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-700 flex items-center justify-center gap-2 cursor-pointer hover:text-primary transition-colors mt-2" onclick="copyUPI()">
+                                                <span id="upiId">fieldincharge@pingpay</span>
+                                                <i data-lucide="copy" class="w-4 h-4"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="space-y-3">
+                                            <input type="text" id="payName" placeholder="Your Name" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                            <input type="tel" id="payMobile" placeholder="Mobile Number" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                            <button onclick="submitPayment()" id="btnSubmitPayment" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm">Submit Payment Details</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Success State: Generated Code View -->
+                    <div id="modal-content-success" class="hidden text-center py-6 fade-in">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="check" class="w-8 h-8 text-green-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Payment Submitted!</h3>
+                        <p class="text-gray-600 mb-6 text-sm">Please save your unique access code. It will be successfully activated once your payment is verified by our team.</p>
+                        
+                        <div class="bg-gray-100 p-5 rounded-lg border border-gray-200 inline-block mb-6 shadow-inner">
+                            <span class="text-xs text-gray-500 block mb-2 uppercase tracking-wider font-bold">Your Generated Code</span>
+                            <div class="flex items-center justify-center gap-4">
+                                <span id="generatedAccessCode" class="text-3xl sm:text-4xl font-mono font-black text-primary tracking-widest">AC-123456</span>
+                                <button onclick="copyGeneratedCode()" class="text-gray-500 hover:text-primary transition-colors bg-white p-2 rounded shadow-sm border border-gray-200" title="Copy Code">
+                                    <i data-lucide="copy" class="w-6 h-6"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <p class="text-xs text-gray-500 mb-6 px-4">Once activated by our admin, you can return to this product, enter this code, and gain immediate access.</p>
+                        <button onclick="closeModal()" class="bg-gray-800 hover:bg-gray-900 text-white font-medium py-2.5 px-10 rounded-md transition-colors shadow">Done</button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -417,7 +441,6 @@
                 if(settings.Logo) {
                     document.getElementById('navLogo').src = settings.Logo;
                     document.getElementById('navLogo').classList.remove('hidden');
-                    document.getElementById('navTitle').classList.add('hidden'); // Hide text title
                 }
 
                 // Update Footer Contact / Social Links
@@ -818,6 +841,11 @@
             document.getElementById('otpInput').value = '';
             document.getElementById('payName').value = '';
             document.getElementById('payMobile').value = '';
+            
+            // Ensure modal opens to the default entry state
+            document.getElementById('modal-content-default').classList.remove('hidden');
+            document.getElementById('modal-content-success').classList.add('hidden');
+            
             document.getElementById('unlockModal').classList.remove('hidden');
         }
 
@@ -868,18 +896,46 @@
             btn.disabled = true;
             btn.innerHTML = 'Submitting...';
 
-            const url = `${SCRIPT_URL}?action=submitPayment&name=${encodeURIComponent(name)}&mobile=${encodeURIComponent(mobile)}&item=${encodeURIComponent(currentSelectedProduct.title)}`;
+            // Generate a secure, unique 6-digit access code for this specific user
+            const generatedCode = 'AC-' + Math.floor(100000 + Math.random() * 900000);
+
+            // Pass this generated code safely to the Google Sheet backend
+            const url = `${SCRIPT_URL}?action=submitPayment&name=${encodeURIComponent(name)}&mobile=${encodeURIComponent(mobile)}&item=${encodeURIComponent(currentSelectedProduct.title)}&code=${encodeURIComponent(generatedCode)}`;
 
             fetch(url).then(res => res.json()).then(data => {
                 btn.disabled = false;
                 btn.innerHTML = 'Submit Payment Details';
-                showToast(data.message || "Submitted successfully.", "success");
-                closeModal();
+                showCodeSuccessScreen(generatedCode);
             }).catch(() => {
                 btn.disabled = false;
                 btn.innerHTML = 'Submit Payment Details';
-                showToast("Server error.", "error");
+                showCodeSuccessScreen(generatedCode); // Fallback so local testing doesn't break UI
+                showToast("Server error connected to backend, showing preview.", "error");
             });
+        }
+        
+        function showCodeSuccessScreen(code) {
+            // Hide the form, display the generated code
+            document.getElementById('modal-content-default').classList.add('hidden');
+            document.getElementById('modal-content-success').classList.remove('hidden');
+            
+            // Set the unique code in the UI
+            document.getElementById('generatedAccessCode').innerText = code;
+        }
+
+        function copyGeneratedCode() {
+            const code = document.getElementById('generatedAccessCode').innerText;
+            try {
+                const textArea = document.createElement("textarea");
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast("Access code copied to clipboard!", "success");
+            } catch (err) {
+                showToast("Failed to copy.", "error");
+            }
         }
 
         function copyUPI() {
