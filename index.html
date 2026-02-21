@@ -51,55 +51,59 @@
                     <i data-lucide="shield-check" class="w-8 h-8"></i>
                     <span class="font-bold text-xl tracking-tight">DigitalVault</span>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#resources" class="text-gray-600 hover:text-primary transition-colors font-medium">Resources</a>
-                    <a href="#members" class="text-gray-600 hover:text-primary transition-colors font-medium">Our Members</a>
+                <!-- Dynamic Navigation Menu injected by JS -->
+                <div class="hidden md:flex space-x-6 items-center" id="desktopNav">
+                    <!-- Nav items go here -->
+                </div>
+                <!-- Mobile Menu Icon (Visual Only) -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-600 hover:text-primary"><i data-lucide="menu" class="w-6 h-6"></i></button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full relative">
         
-        <!-- Header -->
-        <div class="text-center mb-10">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Premium Digital Resources</h1>
-            <p class="text-gray-600 max-w-2xl mx-auto">Access our exclusive software, comprehensive courses, professional training, and certified programs. Securely locked for premium members.</p>
+        <!-- Loading State -->
+        <div id="loadingState" class="absolute inset-0 z-10 flex flex-col items-center justify-center pt-20 hidden">
+            <i data-lucide="loader-2" class="w-12 h-12 text-primary animate-spin mb-4"></i>
+            <p class="text-gray-600 font-medium text-lg">Fetching live data from Google Sheets...</p>
         </div>
 
-        <!-- Resource Section -->
-        <section id="resources" class="mb-16">
-            <!-- Navigation Tabs -->
-            <div class="flex flex-wrap justify-center gap-2 mb-8" id="categoryTabs">
-                <!-- Tabs injected by JS -->
-            </div>
+        <!-- Dynamic Page Header -->
+        <div class="text-center mb-10 fade-in hidden" id="pageHeader">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 capitalize" id="headerTitle">Category Name</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto" id="headerDesc">Browse our exclusive digital resources securely locked for premium members.</p>
+        </div>
 
-            <!-- 1x4 Grid Area -->
+        <!-- Resources Page View -->
+        <section id="resourcesSection" class="mb-16 fade-in hidden">
+            <!-- Grid Area -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="productsGrid">
                 <!-- Product Cards injected by JS -->
             </div>
             
             <!-- Empty State -->
-            <div id="emptyState" class="hidden text-center py-12 text-gray-500">
-                <i data-lucide="folder-search" class="w-12 h-12 mx-auto mb-3 opacity-50"></i>
-                <p>No resources found for this category.</p>
+            <div id="emptyState" class="hidden text-center py-12 text-gray-500 bg-white rounded-xl border border-gray-200 shadow-sm">
+                <i data-lucide="folder-search" class="w-12 h-12 mx-auto mb-3 opacity-50 text-gray-400"></i>
+                <p class="text-lg font-medium text-gray-900">No resources found.</p>
+                <p class="text-sm mt-1">Please ensure your Apps Script is returning data for this category.</p>
             </div>
         </section>
 
-        <hr class="border-gray-200 mb-16">
-
-        <!-- Members Section -->
-        <section id="members" class="mb-16">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <!-- Members Page View -->
+        <section id="membersSection" class="mb-16 fade-in hidden">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
                 <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                    <i data-lucide="users" class="w-6 h-6 text-primary"></i> Our Members
+                    <i data-lucide="users" class="w-6 h-6 text-primary"></i> Directory
                 </h2>
                 <div class="relative w-full md:w-72">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
                     </div>
-                    <input type="text" id="memberSearch" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm transition-shadow" placeholder="Search members...">
+                    <input type="text" id="memberSearch" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm transition-shadow" placeholder="Search members...">
                 </div>
             </div>
 
@@ -111,12 +115,12 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 py-8 text-center text-gray-500 text-sm">
+    <footer class="bg-white border-t border-gray-200 py-8 text-center text-gray-500 text-sm mt-auto">
         <p>&copy; 2026 DigitalVault. All rights reserved.</p>
     </footer>
 
     <!-- Unlock Modal -->
-    <div id="unlockModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div id="unlockModal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
             <!-- Background overlay -->
             <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closeModal()"></div>
@@ -189,7 +193,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-white font-medium pointer-events-none">
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-[70] flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-white font-medium pointer-events-none">
         <i id="toastIcon" data-lucide="info" class="w-5 h-5"></i>
         <span id="toastMsg">Message</span>
     </div>
@@ -198,76 +202,110 @@
         // --- GOOGLE APPS SCRIPT WEB APP URL ---
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-aCqolBYp4-dsRshFmIJ2KIQgaotBgeXI2FBUmmRYDdcTCRnioxc5PdNY-K3Zcobu/exec";
 
-        // --- 1. MOCK DATA & STATE ---
-        const CATEGORIES = ["Software's", "Courses", "Training", "Certificates"];
-        let currentCategory = "Software's";
+        // --- GLOBAL STATE ---
+        const MENU_PAGES = ["Software's", "Courses", "Training", "Certificates", "Members"];
+        let currentPage = "Software's";
         let currentSelectedProduct = null;
+        let activeDataList = []; // Stores the live data fetched from Google
 
-        const mockProducts = [
-            { id: 1, category: "Software's", title: "Pro Video Editor Suite", desc: "Professional grade video editing software with AI enhancements.", price: "₹2,499", photo: "https://images.unsplash.com/photo-1574717024453-354056aaddfa?auto=format&fit=crop&q=80&w=600&h=400", unlocked: false },
-            { id: 2, category: "Software's", title: "SEO Analyzer Pro", desc: "Complete toolkit for auditing and improving website search rankings.", price: "₹1,299", photo: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600&h=400", unlocked: false },
-            { id: 3, category: "Software's", title: "DataViz Dashboard", desc: "Create stunning interactive charts from any dataset.", price: "₹999", photo: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600&h=400", unlocked: false },
-            { id: 4, category: "Software's", title: "CyberSec Guard", desc: "Endpoint protection and firewall management system.", price: "₹3,999", photo: "https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&q=80&w=600&h=400", unlocked: false },
-            
-            { id: 5, category: "Courses", title: "Full-Stack Web Dev", desc: "Learn MERN stack from scratch to advanced deployment.", price: "₹4,999", photo: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600&h=400", unlocked: false },
-            { id: 6, category: "Courses", title: "Advanced Python", desc: "Master Python for Data Science and Machine Learning.", price: "₹3,499", photo: "https://images.unsplash.com/photo-1526379095098-d400fd0bfce8?auto=format&fit=crop&q=80&w=600&h=400", unlocked: false },
-            
-            { id: 7, category: "Training", title: "Agile Scrum Master", desc: "Intensive weekend workshop on Agile methodologies.", price: "₹5,000", photo: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=600&h=400", unlocked: false },
-            { id: 8, category: "Certificates", title: "Cloud Architect Cert", desc: "Official preparation material and exam voucher.", price: "₹10,000", photo: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=600&h=400", unlocked: false },
-        ];
-
-        const mockMembers = [
-            { id: 1, name: "Alex Johnson", role: "Senior Developer", photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
-            { id: 2, name: "Sarah Williams", role: "UI/UX Designer", photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
-            { id: 3, name: "Michael Chen", role: "Data Scientist", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
-            { id: 4, name: "Emily Davis", role: "Product Manager", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
-            { id: 5, name: "David Kim", role: "DevOps Engineer", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
-            { id: 6, name: "Jessica Martinez", role: "Marketing Lead", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" }
-        ];
-
-        // --- 2. INITIALIZATION ---
+        // --- 1. INITIALIZATION ---
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
-            renderTabs();
-            renderProducts();
-            renderMembers(mockMembers);
+            buildNavigation();
+            switchPage(currentPage);
 
-            // Event listener for member search
+            // Event listener for member search filtering
             document.getElementById('memberSearch').addEventListener('input', (e) => {
                 const query = e.target.value.toLowerCase();
-                const filtered = mockMembers.filter(m => 
-                    m.name.toLowerCase().includes(query) || m.role.toLowerCase().includes(query)
+                const filtered = activeDataList.filter(m => 
+                    (m.name && m.name.toLowerCase().includes(query)) || 
+                    (m.role && m.role.toLowerCase().includes(query))
                 );
                 renderMembers(filtered);
             });
         });
 
-        // --- 3. UI RENDER FUNCTIONS ---
-        function renderTabs() {
-            const container = document.getElementById('categoryTabs');
-            container.innerHTML = '';
-            CATEGORIES.forEach(cat => {
-                const isActive = cat === currentCategory;
-                const btn = document.createElement('button');
-                btn.className = `px-5 py-2 rounded-full font-medium text-sm transition-all shadow-sm ${isActive ? 'bg-primary text-white scale-105' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'}`;
-                btn.innerText = cat;
-                btn.onclick = () => {
-                    currentCategory = cat;
-                    renderTabs();
-                    renderProducts();
+        // --- 2. BUILD MAIN MENU NAVIGATION ---
+        function buildNavigation() {
+            const navContainer = document.getElementById('desktopNav');
+            navContainer.innerHTML = '';
+            
+            MENU_PAGES.forEach(page => {
+                const isActive = page === currentPage;
+                const link = document.createElement('a');
+                link.href = "#";
+                
+                // Tailwind classes for active vs inactive menu items
+                link.className = isActive 
+                    ? "text-primary border-b-2 border-primary pb-1 font-bold transition-all text-sm uppercase tracking-wide" 
+                    : "text-gray-500 hover:text-primary border-b-2 border-transparent hover:border-primary pb-1 font-medium transition-all text-sm uppercase tracking-wide";
+                
+                link.innerText = page;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    if(currentPage !== page) {
+                        switchPage(page);
+                    }
                 };
-                container.appendChild(btn);
+                navContainer.appendChild(link);
             });
         }
 
-        function renderProducts() {
+        // --- 3. PAGE SWITCHING & LIVE DATA FETCHING ---
+        async function switchPage(pageName) {
+            currentPage = pageName;
+            buildNavigation(); // Update active highlights in Navbar
+            
+            // Hide all content areas immediately
+            document.getElementById('pageHeader').classList.add('hidden');
+            document.getElementById('resourcesSection').classList.add('hidden');
+            document.getElementById('membersSection').classList.add('hidden');
+            
+            // Show Loading Spinner
+            document.getElementById('loadingState').classList.remove('hidden');
+            
+            try {
+                // FETCH LIVE DATA FROM GOOGLE APPS SCRIPT
+                // Note: Your Apps Script must accept '?action=getData&category=...'
+                const url = `${SCRIPT_URL}?action=getData&category=${encodeURIComponent(pageName)}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) throw new Error("Network response was not OK");
+                
+                const result = await response.json();
+                
+                // Expecting Google Apps script to return JSON: { "data": [...] }
+                activeDataList = result.data || []; 
+                
+            } catch (error) {
+                console.error("Live fetch failed:", error);
+                showToast(`Failed to load ${pageName}. Make sure backend handles GET request.`, "error");
+                activeDataList = []; // Default to empty array on failure
+            }
+
+            // Hide Loading Spinner
+            document.getElementById('loadingState').classList.add('hidden');
+
+            // Render Appropriate View
+            if (pageName === 'Members') {
+                document.getElementById('membersSection').classList.remove('hidden');
+                document.getElementById('memberSearch').value = ''; // Reset search
+                renderMembers(activeDataList);
+            } else {
+                document.getElementById('pageHeader').classList.remove('hidden');
+                document.getElementById('headerTitle').innerText = pageName;
+                document.getElementById('resourcesSection').classList.remove('hidden');
+                renderProducts(activeDataList);
+            }
+        }
+
+        // --- 4. UI RENDER FUNCTIONS ---
+        function renderProducts(products) {
             const container = document.getElementById('productsGrid');
             const emptyState = document.getElementById('emptyState');
             container.innerHTML = '';
             
-            const filtered = mockProducts.filter(p => p.category === currentCategory);
-            
-            if(filtered.length === 0) {
+            if(!products || products.length === 0) {
                 container.classList.add('hidden');
                 emptyState.classList.remove('hidden');
                 return;
@@ -276,27 +314,34 @@
             container.classList.remove('hidden');
             emptyState.classList.add('hidden');
 
-            filtered.forEach(p => {
+            products.forEach(p => {
+                // Ensure properties exist to prevent undefined errors
+                const title = p.title || 'Untitled';
+                const desc = p.desc || p.description || 'No description available.';
+                const price = p.price || 'Free';
+                const photoUrl = p.photo || p.photoUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=600&h=400';
+                const isUnlocked = p.unlocked === true || p.unlocked === "true";
+
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-xl shadow-md overflow-hidden relative group cursor-pointer border border-gray-100 transition-transform hover:-translate-y-1";
-                card.onclick = () => p.unlocked ? alert("Content already unlocked!") : openModal(p.id);
+                card.onclick = () => isUnlocked ? alert("Content already unlocked!") : openModal(p);
 
                 card.innerHTML = `
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="${p.photo}" alt="${p.title}" class="w-full h-full object-cover ${p.unlocked ? '' : 'blurred-content'}">
-                        ${!p.unlocked ? `
-                        <div class="absolute inset-0 flex items-center justify-center bg-white/30">
+                    <div class="h-48 overflow-hidden relative bg-gray-100">
+                        <img src="${photoUrl}" alt="${title}" class="w-full h-full object-cover ${isUnlocked ? '' : 'blurred-content'}">
+                        ${!isUnlocked ? `
+                        <div class="absolute inset-0 flex items-center justify-center bg-white/20 backdrop-blur-[2px]">
                             <div class="bg-white p-3 rounded-full shadow-lg">
                                 <i data-lucide="lock" class="w-6 h-6 text-gray-800"></i>
                             </div>
                         </div>` : ''}
                     </div>
                     <div class="p-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-gray-900 line-clamp-1">${p.title}</h3>
-                            <span class="text-primary font-semibold text-sm">${p.price}</span>
+                        <div class="flex justify-between items-start mb-2 gap-2">
+                            <h3 class="font-bold text-gray-900 line-clamp-1 flex-1">${title}</h3>
+                            <span class="text-primary font-semibold text-sm whitespace-nowrap">${price}</span>
                         </div>
-                        <p class="text-gray-500 text-sm line-clamp-2">${p.desc}</p>
+                        <p class="text-gray-500 text-sm line-clamp-2">${desc}</p>
                     </div>
                 `;
                 container.appendChild(card);
@@ -308,35 +353,38 @@
             const container = document.getElementById('membersGrid');
             container.innerHTML = '';
             
-            if(membersList.length === 0) {
-                container.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">No members found matching your search.</div>';
+            if(!membersList || membersList.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500 bg-gray-50 rounded-xl border border-gray-200">No members found or backend not configured yet.</div>';
                 return;
             }
 
             membersList.forEach(m => {
+                const name = m.name || 'Unknown User';
+                const role = m.role || 'Member';
+                const photoUrl = m.photo || m.photoUrl || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
+
                 const card = document.createElement('div');
                 card.className = "bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4 hover:shadow-md transition-shadow";
                 card.innerHTML = `
-                    <img src="${m.photo}" alt="${m.name}" class="w-16 h-16 rounded-full object-cover border-2 border-primary/20">
+                    <img src="${photoUrl}" alt="${name}" class="w-16 h-16 rounded-full object-cover border-2 border-primary/20 bg-gray-100">
                     <div>
-                        <h4 class="font-bold text-gray-900">${m.name}</h4>
-                        <p class="text-sm text-gray-500">${m.role}</p>
+                        <h4 class="font-bold text-gray-900">${name}</h4>
+                        <p class="text-sm text-gray-500">${role}</p>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // --- 4. MODAL & INTERACTION LOGIC ---
-        function openModal(productId) {
-            currentSelectedProduct = mockProducts.find(p => p.id === productId);
-            if(!currentSelectedProduct) return;
+        // --- 5. MODAL & API INTERACTION LOGIC ---
+        function openModal(productObj) {
+            currentSelectedProduct = productObj;
 
-            document.getElementById('modalTitle').innerText = currentSelectedProduct.title;
-            document.getElementById('modalDesc').innerText = currentSelectedProduct.desc;
-            document.getElementById('modalPrice').innerText = currentSelectedProduct.price;
+            document.getElementById('modalTitle').innerText = productObj.title || 'Product';
+            document.getElementById('modalDesc').innerText = productObj.desc || productObj.description || '';
+            document.getElementById('modalPrice').innerText = productObj.price || '';
             
-            // Reset fields
+            // Reset input fields
             document.getElementById('otpInput').value = '';
             document.getElementById('payName').value = '';
             document.getElementById('payMobile').value = '';
@@ -359,8 +407,8 @@
             btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Verifying...';
             lucide.createIcons();
 
-            // Setup URL parameters for GET request to Google Apps Script
-            const url = `${SCRIPT_URL}?action=verifyOTP&code=${encodeURIComponent(otp)}&title=${encodeURIComponent(currentSelectedProduct.title)}&category=${encodeURIComponent(currentSelectedProduct.category)}`;
+            // Strict Live API Call
+            const url = `${SCRIPT_URL}?action=verifyOTP&code=${encodeURIComponent(otp)}&title=${encodeURIComponent(currentSelectedProduct.title)}&category=${encodeURIComponent(currentPage)}`;
 
             fetch(url)
                 .then(response => {
@@ -373,29 +421,17 @@
                     
                     if(data.success || data.status === 'success') {
                         showToast(data.message || "Access Granted! Content unlocked.", "success");
-                        currentSelectedProduct.unlocked = true;
                         closeModal();
-                        renderProducts();
+                        switchPage(currentPage); // Reload live data to reflect unlocked state
                     } else {
                         showToast(data.message || "Invalid or used code. Try again.", "error");
                     }
                 })
                 .catch(error => {
-                    console.warn("Backend fetch failed, using mock fallback logic:", error);
-                    
-                    // FALLBACK: If your GAS isn't returning standard CORS JSON yet, use simulation
-                    setTimeout(() => {
-                        btn.disabled = false;
-                        btn.innerHTML = 'Verify & Unlock';
-                        if(otp.length >= 5 && otp.endsWith("1")) {
-                            showToast("Access Granted (Simulated)! Content unlocked.", "success");
-                            currentSelectedProduct.unlocked = true;
-                            closeModal();
-                            renderProducts();
-                        } else {
-                            showToast("Invalid or used code. Try again.", "error");
-                        }
-                    }, 500);
+                    console.error("OTP verification failed:", error);
+                    btn.disabled = false;
+                    btn.innerHTML = 'Verify & Unlock';
+                    showToast("Server error connecting to Google Apps Script.", "error");
                 });
         }
 
@@ -410,7 +446,7 @@
             btn.disabled = true;
             btn.innerHTML = 'Submitting...';
 
-            // Setup URL parameters for GET request to Google Apps Script
+            // Strict Live API Call
             const url = `${SCRIPT_URL}?action=submitPayment&name=${encodeURIComponent(name)}&mobile=${encodeURIComponent(mobile)}&item=${encodeURIComponent(currentSelectedProduct.title)}`;
 
             fetch(url)
@@ -425,15 +461,10 @@
                     closeModal();
                 })
                 .catch(error => {
-                    console.warn("Backend fetch failed, using mock fallback logic:", error);
-                    
-                    // FALLBACK: If your GAS isn't returning standard CORS JSON yet, use simulation
-                    setTimeout(() => {
-                        btn.disabled = false;
-                        btn.innerHTML = 'Submit Payment Details';
-                        showToast("Details submitted (Simulated)! Awaiting manual approval.", "success");
-                        closeModal();
-                    }, 800);
+                    console.error("Payment submission failed:", error);
+                    btn.disabled = false;
+                    btn.innerHTML = 'Submit Payment Details';
+                    showToast("Server error connecting to Google Apps Script.", "error");
                 });
         }
 
@@ -452,7 +483,7 @@
             }
         }
 
-        // --- 5. TOAST NOTIFICATION SYSTEM ---
+        // --- 6. TOAST NOTIFICATION SYSTEM ---
         let toastTimeout;
         function showToast(message, type = "info") {
             const toast = document.getElementById('toast');
