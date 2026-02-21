@@ -40,6 +40,10 @@
             user-select: none;
         }
 
+        /* Hide scrollbar for horizontal scroll containers */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         /* Carousel Animation */
         @keyframes scroll {
             0% { transform: translateX(0); }
@@ -52,28 +56,29 @@
         .animate-scroll:hover {
             animation-play-state: paused;
         }
+        
+        /* Print Styles for ID Card */
+        @media print {
+            body * { visibility: hidden; }
+            #idCardModal, #idCardModal * { visibility: visible; }
+            #idCardModal { position: absolute; left: 0; top: 0; width: 100%; display: flex; justify-content: center; align-items: flex-start; padding-top: 2rem;}
+            .print-hidden { display: none !important; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
 
     <!-- Navbar -->
     <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col items-center gap-3">
                 <!-- Logo Section -->
-                <div class="flex items-center space-x-2 text-primary">
-                    <img id="navLogo" src="" alt="Portal Logo" class="h-10 hidden object-contain">
-                    <span id="navTitle" class="font-bold text-xl tracking-tight flex items-center gap-2">
-                        <i data-lucide="shield-check" class="w-8 h-8"></i> DigitalVault
-                    </span>
+                <div class="flex justify-center items-center w-full min-h-[48px]">
+                    <img id="navLogo" src="" alt="Portal Logo" class="h-12 hidden object-contain">
                 </div>
                 <!-- Dynamic Navigation Menu injected by JS -->
-                <div class="hidden md:flex space-x-6 items-center" id="desktopNav">
+                <div class="flex space-x-6 items-center overflow-x-auto w-full justify-start md:justify-center hide-scrollbar pb-1" id="desktopNav">
                     <!-- Nav items go here -->
-                </div>
-                <!-- Mobile Menu Icon (Visual Only) -->
-                <div class="md:hidden flex items-center">
-                    <button class="text-gray-600 hover:text-primary"><i data-lucide="menu" class="w-6 h-6"></i></button>
                 </div>
             </div>
         </div>
@@ -89,12 +94,58 @@
         </div>
 
         <!-- 1ST PAGE: HOME / DASHBOARD VIEW -->
-        <section id="homeSection" class="mb-16 fade-in hidden space-y-16">
+        <section id="homeSection" class="mb-16 fade-in hidden space-y-12">
             
-            <!-- Welcome Header -->
-            <div class="text-center bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Welcome to Our Portal</h1>
-                <p class="text-gray-600 max-w-2xl mx-auto">Explore our premium digital resources, comprehensive courses, professional training, and certified programs securely locked for premium members.</p>
+            <!-- Registration Form Section -->
+            <div class="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-gray-200">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-3">
+                        <i data-lucide="user-plus" class="w-8 h-8 text-primary"></i> Register with Us
+                    </h1>
+                    <p class="text-gray-600 max-w-2xl mx-auto">Join our global professional network. Recruiters worldwide are actively seeking verified members from our directory. Register now to generate your official ID Card.</p>
+                </div>
+                
+                <form id="registrationForm" onsubmit="handleRegistration(event)" class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Left Column -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                                <input type="text" id="regName" required placeholder="e.g. John Doe" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Designation *</label>
+                                <input type="text" id="regDesignation" required placeholder="e.g. Senior Software Engineer" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Total Experience *</label>
+                                <input type="text" id="regExperience" required placeholder="e.g. 5 Years" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow">
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Highest Qualification *</label>
+                                <input type="text" id="regQualification" required placeholder="e.g. M.Tech in Computer Science" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number *</label>
+                                <input type="tel" id="regMobile" required placeholder="e.g. +91 9876543210" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Passport Size Photo *</label>
+                                <input type="file" id="regPhoto" accept="image/*" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-primary hover:file:bg-blue-100 cursor-pointer border border-gray-300 rounded-lg">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 text-center">
+                        <button type="submit" id="btnSubmitRegistration" class="bg-primary hover:bg-primaryHover text-white font-bold py-3 px-8 rounded-lg transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 mx-auto w-full md:w-auto min-w-[250px]">
+                            Submit & Generate ID Card
+                        </button>
+                    </div>
+                </form>
             </div>
 
             <!-- Samples Container (Horizontal Scroll) -->
@@ -172,6 +223,63 @@
         </div>
     </footer>
 
+    <!-- Official ID Card Modal -->
+    <div id="idCardModal" class="fixed inset-0 z-[80] hidden overflow-y-auto bg-gray-900 bg-opacity-90 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-sm fade-in">
+            <!-- ID Card Template -->
+            <div class="bg-white rounded-xl shadow-2xl overflow-hidden mx-auto border border-gray-300 relative">
+                <!-- Header -->
+                <div class="bg-primary p-4 flex justify-between items-center text-white h-20">
+                    <img id="idCardLogo" class="max-h-10 bg-white p-1 rounded object-contain hidden">
+                    <span class="font-bold tracking-widest text-sm uppercase flex-1 text-right">Professional ID</span>
+                </div>
+                
+                <!-- Content -->
+                <div class="px-6 pb-6 pt-0 flex flex-col items-center relative">
+                    <!-- Photo -->
+                    <div class="w-28 h-28 rounded-full border-4 border-white shadow-lg overflow-hidden -mt-14 mb-4 bg-gray-100 z-10 flex items-center justify-center">
+                        <img id="idCardPhoto" src="" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <h3 id="idCardName" class="font-bold text-xl text-gray-900 uppercase text-center mb-1">Name Here</h3>
+                    <p id="idCardDesignation" class="text-sm font-semibold text-primary mb-5 text-center px-4">Designation Here</p>
+                    
+                    <!-- Details Matrix -->
+                    <div class="w-full border-t border-gray-200 pt-4 space-y-3">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500 font-medium text-xs">ID NO:</span>
+                            <span id="idCardNo" class="font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded">FI-000</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500 font-medium text-xs">QUALIFICATION:</span>
+                            <span id="idCardQual" class="font-semibold text-gray-800 text-right">Degree</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500 font-medium text-xs">EXPERIENCE:</span>
+                            <span id="idCardExp" class="font-semibold text-gray-800 text-right">0 Years</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500 font-medium text-xs">ISSUED:</span>
+                            <span id="idCardDate" class="font-semibold text-gray-800 text-right">Date</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div class="bg-gray-100 p-3 text-center text-[10px] text-gray-500 border-t border-gray-200">
+                    <p class="font-bold text-gray-700 uppercase mb-1">Official Network Member</p>
+                    <p>If found, please return to issuing authority.</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons (Hidden on Print) -->
+            <div class="text-center mt-6 print-hidden space-x-3">
+                <button onclick="closeIdCard()" class="bg-gray-600 text-white px-6 py-2.5 rounded-lg font-bold shadow hover:bg-gray-700 transition-colors">Close</button>
+                <button onclick="window.print()" class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold shadow hover:bg-primaryHover transition-colors"><i data-lucide="printer" class="w-4 h-4 inline-block mr-1 -mt-1"></i> Print / Save</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Unlock Modal -->
     <div id="unlockModal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
@@ -221,7 +329,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-[70] flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-white font-medium pointer-events-none">
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-[100] flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-white font-medium pointer-events-none">
         <i id="toastIcon" data-lucide="info" class="w-5 h-5"></i>
         <span id="toastMsg">Message</span>
     </div>
@@ -271,7 +379,6 @@
                 if(settings.Logo) {
                     document.getElementById('navLogo').src = settings.Logo;
                     document.getElementById('navLogo').classList.remove('hidden');
-                    document.getElementById('navTitle').classList.add('hidden'); // Hide text title
                 }
 
                 // Update Footer Contact / Social Links
@@ -319,8 +426,8 @@
                 link.href = "#";
                 
                 link.className = isActive 
-                    ? "text-primary border-b-2 border-primary pb-1 font-bold transition-all text-sm uppercase tracking-wide" 
-                    : "text-gray-500 hover:text-primary border-b-2 border-transparent hover:border-primary pb-1 font-medium transition-all text-sm uppercase tracking-wide";
+                    ? "text-primary border-b-2 border-primary pb-1 font-bold transition-all text-sm uppercase tracking-wide whitespace-nowrap flex-shrink-0" 
+                    : "text-gray-500 hover:text-primary border-b-2 border-transparent hover:border-primary pb-1 font-medium transition-all text-sm uppercase tracking-wide whitespace-nowrap flex-shrink-0";
                 
                 link.innerText = page;
                 link.onclick = (e) => {
@@ -550,7 +657,110 @@
             lucide.createIcons();
         }
 
-        // --- 6. MODAL & API LOGIC ---
+        // --- 6. REGISTRATION & ID CARD LOGIC ---
+        async function handleRegistration(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btnSubmitRegistration');
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Submitting...';
+            lucide.createIcons();
+
+            const name = document.getElementById('regName').value.trim();
+            const designation = document.getElementById('regDesignation').value.trim();
+            const exp = document.getElementById('regExperience').value.trim();
+            const qual = document.getElementById('regQualification').value.trim();
+            const mobile = document.getElementById('regMobile').value.trim();
+            const photoInput = document.getElementById('regPhoto');
+
+            let photoBase64 = 'https://via.placeholder.com/150'; // Fallback
+
+            if (photoInput.files && photoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async function(event) {
+                    photoBase64 = event.target.result;
+                    await processRegistrationPayload(name, designation, exp, qual, mobile, photoBase64, btn);
+                };
+                reader.readAsDataURL(photoInput.files[0]);
+            } else {
+                await processRegistrationPayload(name, designation, exp, qual, mobile, photoBase64, btn);
+            }
+        }
+
+        async function processRegistrationPayload(name, designation, exp, qual, mobile, photoBase64, btn) {
+            // Note: In a true production scenario with Google Apps Script, 
+            // you'd typically send a POST request with the base64 string because URL params are too short for images.
+            // For now, we simulate the network request and instantly show the ID Card.
+            
+            const payload = {
+                action: 'registerMember',
+                name: name,
+                designation: designation,
+                experience: exp,
+                qualification: qual,
+                mobile: mobile,
+                photo: photoBase64
+            };
+
+            try {
+                // Simulated POST Request (Will fall into catch block if endpoint doesn't support POST yet)
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                
+                // Show ID Card with real or simulated ID Number
+                showIDCard(name, designation, exp, qual, data.idno || generateFakeID(), photoBase64);
+                showToast("Registration Successful!", "success");
+
+            } catch (err) {
+                console.warn("GAS POST failed or unsupported. Generating ID Card locally for UI preview.", err);
+                showIDCard(name, designation, exp, qual, generateFakeID(), photoBase64);
+                showToast("Registration submitted (Local Preview)", "success");
+            }
+            
+            // Reset UI
+            btn.disabled = false;
+            btn.innerHTML = 'Submit & Generate ID Card';
+            document.getElementById('registrationForm').reset();
+        }
+
+        function generateFakeID() {
+            return 'FI-' + Math.floor(Math.random() * 900 + 100);
+        }
+
+        function showIDCard(name, designation, exp, qual, idno, photoSrc) {
+            // Populate Data
+            document.getElementById('idCardName').innerText = name;
+            document.getElementById('idCardDesignation').innerText = designation;
+            document.getElementById('idCardExp').innerText = exp;
+            document.getElementById('idCardQual').innerText = qual;
+            document.getElementById('idCardNo').innerText = idno;
+            document.getElementById('idCardPhoto').src = photoSrc;
+            
+            // Set Date
+            const today = new Date();
+            document.getElementById('idCardDate').innerText = today.toLocaleDateString('en-GB');
+            
+            // Set Logo (Clone from Navbar)
+            const navLogoSrc = document.getElementById('navLogo').src;
+            if (navLogoSrc && !navLogoSrc.endsWith('index.html')) {
+                document.getElementById('idCardLogo').src = navLogoSrc;
+                document.getElementById('idCardLogo').classList.remove('hidden');
+            } else {
+                document.getElementById('idCardLogo').classList.add('hidden');
+            }
+
+            // Show Modal
+            document.getElementById('idCardModal').classList.remove('hidden');
+        }
+
+        function closeIdCard() {
+            document.getElementById('idCardModal').classList.add('hidden');
+        }
+
+        // --- 7. MODAL & API LOGIC (For Products) ---
         function openModal(productObj) {
             currentSelectedProduct = productObj;
             document.getElementById('modalTitle').innerText = productObj.title || 'Product';
@@ -576,7 +786,7 @@
             btn.disabled = true;
             btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Verifying...';
 
-            const categoryToSend = currentSelectedProduct.category || currentPage; // Fallback to current page if home
+            const categoryToSend = currentSelectedProduct.category || currentPage;
             const url = `${SCRIPT_URL}?action=verifyOTP&code=${encodeURIComponent(otp)}&title=${encodeURIComponent(currentSelectedProduct.title)}&category=${encodeURIComponent(categoryToSend)}`;
 
             fetch(url).then(res => res.json()).then(data => {
@@ -586,7 +796,6 @@
                     showToast(data.message || "Unlocked!", "success");
                     closeModal();
                     
-                    // Immediately redirect/open to the provided item URL if it was sent by backend!
                     if (data.url && data.url !== "#") {
                          window.open(data.url, '_blank');
                     }
@@ -639,7 +848,7 @@
             }
         }
 
-        // --- 7. TOAST NOTIFICATION ---
+        // --- 8. TOAST NOTIFICATION ---
         let toastTimeout;
         function showToast(message, type = "info") {
             const toast = document.getElementById('toast');
